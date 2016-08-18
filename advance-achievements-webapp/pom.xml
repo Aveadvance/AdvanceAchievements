@@ -9,7 +9,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   
-  <artifactId>advance-achievements-webapp1</artifactId>
+  <artifactId>advance-achievements-webapp</artifactId>
   
   <packaging>war</packaging>
   
