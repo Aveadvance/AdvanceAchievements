@@ -14,11 +14,13 @@
     <module>advance-achievements-user-account</module>
     <module>advance-achievements-user-account-interface</module>
     <module>advance-achievements-user-account-integration</module>
+    <module>advance-achievements-configuration</module>
   </modules>
   
   <properties>
   	<springframework.version>4.3.2.RELEASE</springframework.version>
   	<springframework.security.version>4.1.2.RELEASE</springframework.security.version>
+  	<hibernate.version>5.2.2.Final</hibernate.version>
   </properties>
   
   <build>
@@ -44,6 +46,11 @@
 	  		<artifactId>junit</artifactId>
 	  		<version>4.12</version>
 	  	</dependency>
+	 	<dependency>
+	 		<groupId>com.oracle</groupId>
+	 		<artifactId>ojdbc6</artifactId>
+	 		<version>11.2.0.4</version>
+	 	</dependency>
 	  	<dependency>
 	  		<groupId>org.springframework</groupId>
 	  		<artifactId>spring-core</artifactId>
@@ -69,6 +76,21 @@
 	  		<artifactId>spring-webmvc</artifactId>
 	  		<version>${springframework.version}</version>
 	  	</dependency>
+	 	<dependency>
+	 		<groupId>org.springframework</groupId>
+	 		<artifactId>spring-orm</artifactId>
+	 		<version>${springframework.version}</version>
+	 	</dependency>
+	 	<dependency>
+	 		<groupId>org.springframework</groupId>
+	 		<artifactId>spring-tx</artifactId>
+	 		<version>${springframework.version}</version>
+	 	</dependency>
+	 	<dependency>
+	 		<groupId>org.springframework</groupId>
+	 		<artifactId>spring-test</artifactId>
+	 		<version>${springframework.version}</version>
+	 	</dependency>
 	  	<dependency>
 	  		<groupId>org.springframework.security</groupId>
 	  		<artifactId>spring-security-core</artifactId>
@@ -84,6 +106,11 @@
 	  		<artifactId>spring-security-config</artifactId>
 	  		<version>${springframework.security.version}</version>
 	  	</dependency>
+	 	<dependency>
+	 		<groupId>org.hibernate</groupId>
+	 		<artifactId>hibernate-core</artifactId>
+	 		<version>${hibernate.version}</version>
+	 	</dependency>
   	</dependencies>
   </dependencyManagement>
   
