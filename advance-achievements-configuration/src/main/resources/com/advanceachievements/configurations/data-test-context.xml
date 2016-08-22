@@ -10,46 +10,15 @@
 	<beans profile="development">
 		
 		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-			<!-- <property name="dataSource" ref="dataSource"/> -->
 			<property name="persistenceUnitName" value="development-persistence"></property>
 			<property name="persistenceXmlLocation" value="classpath:com/advanceachievements/configurations/persistence.xml"/>
-			<!-- <property name="packagesToScan">
-				<list>
-					<value>com.advanceachievements.data.entities</value>
-				</list>
-			</property> -->
-			<!-- <property name="jpaVendorAdapter">
-				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect"/>
-				</bean>
-			</property> -->
-		</bean>
-	
-		<!-- <bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource">
-			<property name="URL" value="${jdbc.url}"/>
-			<property name="user" value="${jdbc.user}"/>
-			<property name="password" value="${jdbc.password}"/>
 		</bean>
 		
-		<context:property-placeholder location="classpath:com/advanceachievements/properties/jdbc-test.properties"/> -->
-	
-		<!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-			<property name="dataSource" ref="dataSource"/>
-			<property name="hibernateProperties">
-				<value>
-				hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
-				hibernate.show_sql=true
-				</value>
-			</property>
+		<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+			<property name="entityManagerFactory" ref="entityManagerFactory"/>
 		</bean>
 		
-		<bean id="transactionalManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-			<property name="dataSource" ref="dataSource"/>
-		</bean>
-		
-		<tx:annotation-driven />
-		
-		 -->
+		<tx:annotation-driven transaction-manager="txManager"/>
 	</beans>
 
 </beans>

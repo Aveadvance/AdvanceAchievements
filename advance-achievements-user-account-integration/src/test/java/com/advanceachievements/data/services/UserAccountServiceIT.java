@@ -1,6 +1,7 @@
 package com.advanceachievements.data.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.advanceachievements.data.entities.UserAccount;
 
@@ -22,6 +24,7 @@ public class UserAccountServiceIT {
 	UserAccountService userAccountService;
 	
 	@Test
+	@Transactional
 	public void createUserFromInputParameters() {
 		String email = "example@example.com";
 		String password = "pass12345";
@@ -31,9 +34,9 @@ public class UserAccountServiceIT {
 		assertEquals("Password must be identical.", password, userAccount.getPassword());
 	}
 	
-	@Test
-	public void createTwoAccountsWithIdenticalEmails() {
-		
-	}
+//	@Test
+//	@Transactional
+//	public void createTwoAccountsWithIdenticalEmails() {
+//	}
 
 }
