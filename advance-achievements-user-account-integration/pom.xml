@@ -19,6 +19,11 @@
 	  		<artifactId>advance-achievements-configuration</artifactId>
 	  		<version>${project.version}</version>
 	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advance-achievements-user-account</artifactId>
+	  		<version>${project.version}</version>
+	  	</dependency>
 	    <dependency>
 	      <groupId>junit</groupId>
 	      <artifactId>junit</artifactId>
@@ -34,7 +39,27 @@
 	 	</dependency>
 	 	<dependency>
 	 		<groupId>org.springframework</groupId>
+	 		<artifactId>spring-webmvc</artifactId>
+	 	</dependency>
+	 	<dependency>
+	 		<groupId>org.springframework</groupId>
 	 		<artifactId>spring-test</artifactId>
 	 	</dependency>
+	  	<dependency>
+	  		<groupId>org.springframework.security</groupId>
+	  		<artifactId>spring-security-core</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.springframework.security</groupId>
+	  		<artifactId>spring-security-web</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.springframework.security</groupId>
+	  		<artifactId>spring-security-config</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.hibernate</groupId>
+	  		<artifactId>hibernate-c3p0</artifactId>
+	  	</dependency>
 	</dependencies>
 </project>

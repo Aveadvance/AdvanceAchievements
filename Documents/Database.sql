@@ -1,0 +1,8 @@
+CREATE SEQUENCE user_accounts_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE user_accounts (
+	id NUMBER(19,0) NOT NULL,
+	email VARCHAR2(80 CHAR),
+	password VARCHAR2(80 CHAR),
+	PRIMARY KEY (id)
+);

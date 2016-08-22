@@ -9,12 +9,12 @@
   <packaging>pom</packaging>
   
   <modules>
+    <module>advance-achievements-configuration</module>
     <module>advance-achievements-webapp</module>
     <module>advance-achievements-interfaces</module>
     <module>advance-achievements-user-account</module>
     <module>advance-achievements-user-account-interface</module>
     <module>advance-achievements-user-account-integration</module>
-    <module>advance-achievements-configuration</module>
   </modules>
   
   <properties>
@@ -41,6 +41,11 @@
   
   <dependencyManagement>
   	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 	  	<dependency>
 	  		<groupId>junit</groupId>
 	  		<artifactId>junit</artifactId>
@@ -51,6 +56,11 @@
 	 		<artifactId>ojdbc6</artifactId>
 	 		<version>11.2.0.4</version>
 	 	</dependency>
+	    <dependency>
+	    	<groupId>org.hibernate.javax.persistence</groupId>
+	    	<artifactId>hibernate-jpa-2.1-api</artifactId>
+	    	<version>1.0.0.Draft-16</version>
+	    </dependency>
 	  	<dependency>
 	  		<groupId>org.springframework</groupId>
 	  		<artifactId>spring-core</artifactId>
@@ -111,6 +121,11 @@
 	 		<artifactId>hibernate-core</artifactId>
 	 		<version>${hibernate.version}</version>
 	 	</dependency>
+	  	<dependency>
+	  		<groupId>org.hibernate</groupId>
+	  		<artifactId>hibernate-c3p0</artifactId>
+	  		<version>${hibernate.version}</version>
+	  	</dependency>
   	</dependencies>
   </dependencyManagement>
   
