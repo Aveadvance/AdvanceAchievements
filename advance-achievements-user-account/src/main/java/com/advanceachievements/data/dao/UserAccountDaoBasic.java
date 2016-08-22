@@ -1,6 +1,9 @@
 package com.advanceachievements.data.dao;
 
+import java.util.Optional;
+
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -39,7 +42,7 @@ public class UserAccountDaoBasic implements UserAccountDao {
 	}
 
 	@Override
-	public UserAccount retrieve(String email) {
+	public Optional<UserAccount> retrieve(String email) {
 		
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<UserAccount> criteriaQuery = criteriaBuilder.createQuery(UserAccount.class);
@@ -52,7 +55,12 @@ public class UserAccountDaoBasic implements UserAccountDao {
 		TypedQuery<UserAccount> query = entityManager.createQuery(criteriaQuery);
 		query.setParameter(params, email);
 		
-		UserAccount userAccount = query.getSingleResult();
+		Optional<UserAccount> userAccount;
+		try {
+			userAccount = Optional.ofNullable(query.getSingleResult());
+		} catch (NoResultException ex) {
+			userAccount = Optional.empty();
+		}
 		
 		return userAccount;
 	}

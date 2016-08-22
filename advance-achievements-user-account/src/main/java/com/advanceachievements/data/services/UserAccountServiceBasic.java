@@ -1,5 +1,7 @@
 package com.advanceachievements.data.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +23,13 @@ public class UserAccountServiceBasic implements UserAccountService {
 	}
 
 	@Override
-	public UserAccount retrieve(String email) {
+	public Optional<UserAccount> retrieve(String email) {
 		return userAccountDao.retrieve(email);
+	}
+
+	@Override
+	public void create(UserAccount userAccount) {
+		userAccountDao.create(userAccount);
 	}
 
 }

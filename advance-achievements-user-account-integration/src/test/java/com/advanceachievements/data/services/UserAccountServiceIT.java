@@ -1,8 +1,14 @@
 package com.advanceachievements.data.services;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,32 +17,83 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.advanceachievements.data.entities.Authority;
 import com.advanceachievements.data.entities.UserAccount;
 
 @ActiveProfiles("development")
-@ContextConfiguration(locations={"classpath:com/advanceachievements/configurations/data-test-context.xml"
-		, "classpath:com/advanceachievements/configurations/dao-context.xml"
-		, "classpath:com/advanceachievements/configurations/services-context.xml"})
+@ContextConfiguration(locations = { "classpath:com/advanceachievements/configurations/data-test-context.xml",
+		"classpath:com/advanceachievements/configurations/dao-context.xml",
+		"classpath:com/advanceachievements/configurations/services-context.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserAccountServiceIT {
-	
+
 	@Autowired
 	UserAccountService userAccountService;
-	
+
+	private UserAccount userAccount1 = new UserAccount("example@example.com", "pass12345");
+
 	@Test
 	@Transactional
 	public void createUserFromInputParameters() {
-		String email = "example@example.com";
-		String password = "pass12345";
-		userAccountService.create(email, password);
-		UserAccount userAccount = userAccountService.retrieve(email);
-		assertEquals("Email must be identical.", email, userAccount.getEmail());
-		assertEquals("Password must be identical.", password, userAccount.getPassword());
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		UserAccount userAccount = userAccountService.retrieve(userAccount1.getEmail()).get();
+		assertEquals("Email must be identical.", userAccount1.getEmail(), userAccount.getEmail());
+		assertEquals("Password must be identical.", userAccount1.getPassword(), userAccount.getPassword());
+	}
+
+	@Test
+	@Transactional
+	public void defaultAuthority() {
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		Optional<UserAccount> userAccount = userAccountService.retrieve(userAccount1.getEmail());
+		Set<Authority> authorities = userAccount.get().getAuthorities();
+		assertTrue("Should be only one default authority", authorities.size() == 1);
+		assertTrue("Default authority should be ROLE_USER", authorities.contains(Authority.ROLE_USER));
+	}
+
+	@Test
+	@Transactional
+	public void multipleAuthorities() {
+		Set<Authority> authorities = new HashSet<>();
+		authorities.add(Authority.ROLE_USER);
+		authorities.add(Authority.ROLE_ADMIN);
+		UserAccount userAccount = new UserAccount(userAccount1.getEmail(), userAccount1.getPassword(), authorities);
+		userAccountService.create(userAccount);
+		Optional<UserAccount> retrievedUserAccount = userAccountService.retrieve(userAccount1.getEmail());
+		assertTrue("UserAccount has multiple roles", retrievedUserAccount.get().getAuthorities().contains(Authority.ROLE_USER));
+		assertTrue("UserAccount has multiple roles", retrievedUserAccount.get().getAuthorities().contains(Authority.ROLE_ADMIN));
 	}
 	
-//	@Test
-//	@Transactional
-//	public void createTwoAccountsWithIdenticalEmails() {
-//	}
+	@Test
+	@Transactional
+	public void doubledAuthorities() {
+		// For reminding about doubled authority roles.
+		
+		Set<Authority> authorities = new HashSet<>();
+		authorities.add(Authority.ROLE_USER);
+		authorities.add(Authority.ROLE_USER);
+		UserAccount userAccount = new UserAccount(userAccount1.getEmail(), userAccount1.getPassword(), authorities);
+		userAccountService.create(userAccount);
+		Optional<UserAccount> retrievedUserAccount = userAccountService.retrieve(userAccount1.getEmail());
+		assertEquals("UserAccount shouldn't have doubled roles.", 1, retrievedUserAccount.get().getAuthorities().size());
+	}
+
+	@Test
+	@Transactional
+	public void tryToRecieveNonExistingUser() {
+		assertFalse("User should not exist.", userAccountService.retrieve("NonExistingEmail@example.com").isPresent());
+	}
+
+	@Test(expected = ConstraintViolationException.class)
+	@Transactional
+	public void createTwoAccountsWithIdenticalEmails() throws Throwable {
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		try {
+			userAccountService.retrieve(userAccount1.getEmail());
+		} catch (Exception ex) {
+			throw ex.getCause();
+		}
+	}
 
 }
