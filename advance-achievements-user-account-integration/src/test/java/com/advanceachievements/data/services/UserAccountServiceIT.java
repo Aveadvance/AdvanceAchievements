@@ -24,7 +24,7 @@ import com.advanceachievements.data.entities.UserAccount;
 @ActiveProfiles("development")
 @ContextConfiguration(locations = { "classpath:com/advanceachievements/configurations/data-test-context.xml",
 		"classpath:com/advanceachievements/configurations/dao-context.xml",
-		"classpath:com/advanceachievements/configurations/services-context.xml" })
+		"classpath:com/advanceachievements/configurations/service-context.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserAccountServiceIT {
 
@@ -105,9 +105,29 @@ public class UserAccountServiceIT {
 		LocalDateTime stop = LocalDateTime.now();
 		Optional<UserAccount> retrievedUserAccount = userAccountService.retrieve(userAccount1.getEmail());
 		assertTrue("Right creation time was set up"
-				, retrievedUserAccount.get().getCreationDate().isAfter(start) 
+				, retrievedUserAccount.get().getCreationDate().isEqual(start) 
+				|| retrievedUserAccount.get().getCreationDate().isAfter(start) 
 				&& retrievedUserAccount.get().getCreationDate().isBefore(stop));
 		
+	}
+	
+	@Test
+	@Transactional
+	public void userAccountEnabledByDefault() {
+		userAccountService.create(userAccount1);
+		assertTrue("User account enabled by default", userAccountService.retrieve(userAccount1.getEmail()).get().isEnabled());
+	}
+	
+	@Test
+	@Transactional
+	public void disableUserAccount() {
+		userAccountService.create(userAccount1);
+		UserAccount retrieved = userAccountService.retrieve(userAccount1.getEmail()).get();
+		assertTrue("User account enabled by default.", retrieved.isEnabled());
+		userAccountService.update(new UserAccount(retrieved.getId(), retrieved.getEmail()
+				, retrieved.getPassword(), retrieved.getAuthorities(), false));
+		retrieved = userAccountService.retrieve(retrieved.getEmail()).get();
+		assertFalse("User should be disabled.", retrieved.isEnabled());
 	}
 
 }

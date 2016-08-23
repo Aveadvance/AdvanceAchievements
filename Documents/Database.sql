@@ -4,6 +4,8 @@ CREATE TABLE user_accounts (
 	id NUMBER(19,0) NOT NULL,
 	email NVARCHAR2(80 CHAR),
 	password NVARCHAR2(80 CHAR),
+	creation_date TIMESTAMP NOT NULL,
+	enabled NUMBER(1,0) NOT NULL,
 	PRIMARY KEY (id),
 	CONSTRAINT unique_email UNIQUE (email)
 );

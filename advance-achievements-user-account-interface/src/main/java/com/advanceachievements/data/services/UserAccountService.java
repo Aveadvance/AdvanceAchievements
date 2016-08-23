@@ -12,4 +12,6 @@ public interface UserAccountService {
 
 	void create(UserAccount userAccount);
 
+	void update(UserAccount userAccount);
+
 }

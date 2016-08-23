@@ -1,5 +1,6 @@
 package com.advanceachievements.controllers;
 
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,10 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.advanceachievements.data.dto.UserAccountDto;
+import com.advanceachievements.data.entities.UserAccount;
+import com.advanceachievements.data.services.UserAccountService;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations ={"classpath:com/advanceachievements/configurations/dispatcher-servlet.xml"
-		, "classpath:com/advanceachievements/configurations/security-context.xml"
+		, "classpath:com/advanceachievements/configurations/service-context.xml"
+		, "classpath:com/advanceachievements/configurations/dao-context.xml"
 		, "classpath:com/advanceachievements/configurations/data-test-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -33,6 +37,9 @@ public class UserAccountControllerIT {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
+	
+	@Autowired
+	private UserAccountService userAccountService;
 	
 	private UserAccountDto correctAccountDto = new UserAccountDto("example@example.com", "12345");
 	
@@ -49,6 +56,13 @@ public class UserAccountControllerIT {
 				.param("email",correctAccountDto.getEmail()).param("password", correctAccountDto.getPassword()))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userAccountDto"));
+		
+		// Retrieve saved account from database
+		UserAccount retrievedAccount = userAccountService.retrieve(correctAccountDto.getEmail()).get();
+		assertEquals("Account should be saved in the database"
+				, correctAccountDto.getEmail(), retrievedAccount.getEmail());
+		assertEquals("Account should be saved in the database"
+				, correctAccountDto.getPassword(), retrievedAccount.getPassword());
 	}
 	
 	@Test

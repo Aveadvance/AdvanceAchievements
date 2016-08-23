@@ -32,4 +32,9 @@ public class UserAccountServiceBasic implements UserAccountService {
 		userAccountDao.create(userAccount);
 	}
 
+	@Override
+	public void update(UserAccount userAccount) {
+		userAccountDao.update(userAccount);
+	}
+
 }

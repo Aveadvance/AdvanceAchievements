@@ -49,6 +49,10 @@ public class UserAccount {
 	private LocalDateTime creationDate;
 	
 	@NotNull
+	@Column(name="enabled")
+	private boolean enabled;
+	
+	@NotNull
 	@ElementCollection
 	@Enumerated(EnumType.STRING)
 	@Column(name="authority")
@@ -63,6 +67,7 @@ public class UserAccount {
 		this.password = password;
 		this.authorities.add(Authority.ROLE_USER);
 		this.creationDate = LocalDateTime.now();
+		this.enabled = true;
 	}
 
 	public UserAccount(String email, String password, Set<Authority> authorities) {
@@ -70,6 +75,24 @@ public class UserAccount {
 		this.password = password;
 		this.authorities = new HashSet<>(authorities);
 		this.creationDate = LocalDateTime.now();
+		this.enabled = true;
+	}
+
+	public UserAccount(String email, String password, Set<Authority> authorities, boolean enabled) {
+		this.email = email;
+		this.password = password;
+		this.authorities = new HashSet<>(authorities);
+		this.creationDate = LocalDateTime.now();
+		this.enabled = enabled;
+	}
+
+	public UserAccount(Long id, String email, String password, Set<Authority> authorities, boolean enabled) {
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.authorities = new HashSet<>(authorities);
+		this.creationDate = LocalDateTime.now();
+		this.enabled = enabled;
 	}
 
 	public long getId() {
@@ -90,6 +113,10 @@ public class UserAccount {
 
 	public LocalDateTime getCreationDate() {
 		return creationDate;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 }

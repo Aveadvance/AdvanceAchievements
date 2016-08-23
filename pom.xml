@@ -15,6 +15,7 @@
     <module>advance-achievements-user-account</module>
     <module>advance-achievements-user-account-interface</module>
     <module>advance-achievements-user-account-integration</module>
+    <module>advance-achievements-user-account-repository</module>
   </modules>
   
   <properties>

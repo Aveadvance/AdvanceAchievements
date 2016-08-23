@@ -32,8 +32,8 @@ public class UserAccountDaoBasic implements UserAccountDao {
 	}
 
 	@Override
-	public void update(UserAccount t) {
-		throw new UnsupportedOperationException();
+	public void update(UserAccount userAccount) {
+		entityManager.merge(userAccount);
 	}
 
 	@Override
