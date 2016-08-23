@@ -129,7 +129,6 @@ public class UserAccountControllerIT {
 	@Test
 	@Transactional
 	public void withTestEmailParameter2() throws Exception {
-		System.out.println("nice");
 		mockMvc.perform(MockMvcRequestBuilders.post("/newaccount")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "example@example")

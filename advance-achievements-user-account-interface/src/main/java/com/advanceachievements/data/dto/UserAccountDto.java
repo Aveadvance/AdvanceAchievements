@@ -10,7 +10,7 @@ public class UserAccountDto {
 	
 	@NotNull
 	@NotBlank
-	@Email
+	@Email(regexp=".*\\@.*\\..*")
 	private String email;
 	
 	@NotNull

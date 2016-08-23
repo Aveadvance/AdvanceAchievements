@@ -1,5 +1,6 @@
 package com.advanceachievements.data.entities;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +18,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name="user_accounts")
@@ -28,15 +31,22 @@ public class UserAccount {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_accounts_seq")
 	@SequenceGenerator(name="user_accounts_seq", sequenceName="user_accounts_seq", allocationSize=1)
 	private long id;
-	
+
 	@NotNull
-	@Email
+	@NotBlank
+	@Email(regexp=".*\\@.*\\..*")
 	@Column(name="email", unique=true)
 	private String email;
-	
+
 	@NotNull
+	@NotBlank
+	@Size(min=5, max=50)
 	@Column(name="password")
 	private String password;
+	
+	@NotNull
+	@Column(name="creation_date")
+	private LocalDateTime creationDate;
 	
 	@NotNull
 	@ElementCollection
@@ -51,13 +61,15 @@ public class UserAccount {
 	public UserAccount(String email, String password) {
 		this.email = email;
 		this.password = password;
-		authorities.add(Authority.ROLE_USER);
+		this.authorities.add(Authority.ROLE_USER);
+		this.creationDate = LocalDateTime.now();
 	}
 
 	public UserAccount(String email, String password, Set<Authority> authorities) {
 		this.email = email;
 		this.password = password;
 		this.authorities = new HashSet<>(authorities);
+		this.creationDate = LocalDateTime.now();
 	}
 
 	public long getId() {
@@ -74,6 +86,10 @@ public class UserAccount {
 
 	public Set<Authority> getAuthorities() {
 		return authorities;
+	}
+
+	public LocalDateTime getCreationDate() {
+		return creationDate;
 	}
 
 }

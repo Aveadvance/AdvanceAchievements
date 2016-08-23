@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -94,6 +95,19 @@ public class UserAccountServiceIT {
 		} catch (Exception ex) {
 			throw ex.getCause();
 		}
+	}
+	
+	@Test
+	@Transactional
+	public void userAccountCreationDate() {
+		LocalDateTime start = LocalDateTime.now();
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		LocalDateTime stop = LocalDateTime.now();
+		Optional<UserAccount> retrievedUserAccount = userAccountService.retrieve(userAccount1.getEmail());
+		assertTrue("Right creation time was set up"
+				, retrievedUserAccount.get().getCreationDate().isAfter(start) 
+				&& retrievedUserAccount.get().getCreationDate().isBefore(stop));
+		
 	}
 
 }
