@@ -16,6 +16,10 @@
     <module>advance-achievements-user-account-interface</module>
     <module>advance-achievements-user-account-integration</module>
     <module>advance-achievements-user-account-repository</module>
+    <module>advance-achievements-user-task</module>
+    <module>advance-achievements-user-task-interface</module>
+    <module>advance-achievements-user-task-repository</module>
+    <module>advance-achievements-user-task-integration</module>
   </modules>
   
   <properties>
