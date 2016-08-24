@@ -17,22 +17,33 @@ public class UserAccountServiceBasic implements UserAccountService {
 
 	@Override
 	@Transactional
-	public void create(String email, String password) {
-		UserAccount userAccount = new UserAccount(email, password);
-		userAccountDao.create(userAccount);
+	public boolean create(String email, String password) {
+		boolean result = retrieve(email).isPresent();
+		if (!result) {
+			UserAccount userAccount = new UserAccount(email, password);
+			userAccountDao.create(userAccount);
+		}
+		return !result;
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Optional<UserAccount> retrieve(String email) {
 		return userAccountDao.retrieve(email);
 	}
 
 	@Override
-	public void create(UserAccount userAccount) {
-		userAccountDao.create(userAccount);
+	@Transactional
+	public boolean create(UserAccount userAccount) {
+		boolean result = retrieve(userAccount.getEmail()).isPresent();
+		if (!result) {
+			userAccountDao.create(userAccount);
+		}
+		return !result;
 	}
 
 	@Override
+	@Transactional
 	public void update(UserAccount userAccount) {
 		userAccountDao.update(userAccount);
 	}

@@ -6,11 +6,11 @@ import com.advanceachievements.data.entities.UserAccount;
 
 public interface UserAccountService {
 
-	void create(String email, String password);
+	boolean create(String email, String password);
 
 	Optional<UserAccount> retrieve(String email);
 
-	void create(UserAccount userAccount);
+	boolean create(UserAccount userAccount);
 
 	void update(UserAccount userAccount);
 

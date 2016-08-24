@@ -18,31 +18,37 @@
 	<div class="container">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				Please sign in
+				Create new account
 			</div>
-			<div class="panel-body">
-				<div>
-					<c:if test="${ param.exception != null }">
-						<div class="alert alert-danger" role="alert">Check that your email and password are correct.</div>
-					</c:if>
-				</div>	
-				<form action="${pageContext.request.contextPath}/login" method="POST">
-				
+			<div class="panel-body">	
+				<form action="${pageContext.request.contextPath}/newaccount" method="POST">
 					<div class="form-group">
 					  <label for="email">Email address</label>
-					  <input id="email" name="username" type="email" class="form-control" placeholder="Email">
+					  <input id="email" name="email" type="email" class="form-control" placeholder="Email">
 					</div>
+					<c:if test='${ exceptions.getFieldErrors("email").size() > 0 }'>
+						<div class="alert alert-danger">
+							<c:forEach items='${ exceptions.getFieldErrors("email") }' var='item'>
+								<div>${ item.getDefaultMessage() }</div>
+							</c:forEach>
+						</div>
+					</c:if>
 					
 					<div class="form-group">
 					  <label for="password">Password</label>
 					  <input id="password" name="password" type="password" class="form-control" placeholder="Password">
 					</div>
+					<c:if test='${ exceptions.getFieldErrors("password").size() > 0 }'>
+						<div class="alert alert-danger">
+							<c:forEach items='${ exceptions.getFieldErrors("password") }' var='item'>
+								<div>${ item.getDefaultMessage() }</div>
+							</c:forEach>
+						</div>
+					</c:if>
 					
-					<input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }"/>
+					<input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }" />
 					
-		  			<button type="submit" class="btn btn-primary">Sign in</button>
-		  			
-		  			<a class="btn btn-link" href="${ pageContext.request.contextPath }/create-account">Create new account</a>
+		  			<button type="submit" class="btn btn-primary">Create account</button>
 				</form>
 			</div>
 		</div>

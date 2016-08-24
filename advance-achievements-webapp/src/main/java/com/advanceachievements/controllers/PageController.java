@@ -8,7 +8,12 @@ public class PageController {
 
 	@RequestMapping("/")
 	public String initialPage() {
-		return "init";
+		return "index";
+	}
+
+	@RequestMapping("/access-denied-page")
+	public String accessDeniedPage() {
+		return "access-denied-page";
 	}
 	
 }

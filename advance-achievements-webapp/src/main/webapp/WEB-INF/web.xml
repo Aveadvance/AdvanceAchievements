@@ -9,8 +9,10 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:com/advanceachievements/configurations/security-context.xml
+			classpath:com/advanceachievements/configurations/service-context.xml
 			classpath:com/advanceachievements/configurations/data-context.xml
+			classpath:com/advanceachievements/configurations/dao-context.xml
+			classpath:com/advanceachievements/configurations/security-context.xml
 		</param-value>
 	</context-param>
 	

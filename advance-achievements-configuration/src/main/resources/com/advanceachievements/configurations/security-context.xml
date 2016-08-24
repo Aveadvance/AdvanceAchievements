@@ -6,15 +6,22 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<security:authentication-manager>
-		<security:authentication-provider user-service-ref="CustomUserDetailsService"/>
+		<security:authentication-provider user-service-ref="customUserDetailsService"/>
 	</security:authentication-manager>
 	
 	<security:http use-expressions="true">
+		<security:access-denied-handler error-page="/access-denied-page"/>
 		<security:intercept-url pattern="/" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/static/**" access="permitAll"/>
 		<security:intercept-url pattern="/login" access="permitAll"/>
+		<security:intercept-url pattern="/logout" access="permitAll"/>
+		<security:intercept-url pattern="/create-account" access="permitAll"/>
+		<security:intercept-url pattern="/newaccount" access="permitAll"/>
+		<security:intercept-url pattern="/access-denied-page" access="permitAll"/>
+		<security:intercept-url pattern="/persistence-exception-page" access="permitAll"/>
 		<security:intercept-url pattern="/**" access="denyAll"/>
-		<security:form-login login-page="/login"/>
+		<security:form-login login-page="/login" authentication-failure-url="/login?exception"/>
+		<security:logout logout-success-url="/"/>
 	</security:http>
 
 </beans>
