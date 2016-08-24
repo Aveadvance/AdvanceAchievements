@@ -27,7 +27,7 @@ public class UserAccountDaoBasic implements UserAccountDao {
 	}
 
 	@Override
-	public UserAccount retrieve(Long id) {
+	public Optional<UserAccount> retrieve(Long id) {
 		throw new UnsupportedOperationException();
 	}
 

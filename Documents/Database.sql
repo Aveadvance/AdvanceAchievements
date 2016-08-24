@@ -5,6 +5,7 @@
 ***
 
 CREATE SEQUENCE user_accounts_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE user_task_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE user_accounts (
 	id NUMBER(19,0) NOT NULL,
@@ -22,4 +23,12 @@ CREATE TABLE user_account_authorities (
 	PRIMARY KEY (id),
 	CONSTRAINT authority_foreign_key FOREIGN KEY (id) REFERENCES user_accounts,
 	CONSTRAINT unique_authorities_for_user UNIQUE (id, authority)
+);
+
+CREATE TABLE user_tasks (
+	id NUMBER(19,0) NOT NULL,
+	title VARCHAR2(100 CHAR) NOT NULL,
+	description VARCHAR2(1000 CHAR) NOT NULL,
+	priority VARCHAR2(30 CHAR) NOT NULL,
+	PRIMARY KEY (id)
 );
