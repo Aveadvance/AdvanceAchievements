@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,16 +84,13 @@ public class UserAccountServiceIT {
 		assertFalse("User should not exist.", userAccountService.retrieve("NonExistingEmail@example.com").isPresent());
 	}
 
-	@Test(expected = ConstraintViolationException.class)
+	@Test
 	@Transactional
 	public void createTwoAccountsWithIdenticalEmails() throws Throwable {
-		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
-		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
-		try {
-			userAccountService.retrieve(userAccount1.getEmail());
-		} catch (Exception ex) {
-			throw ex.getCause();
-		}
+		boolean result = userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		assertTrue("User created", result && userAccountService.retrieve(userAccount1.getEmail()).isPresent());
+		result = userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		assertTrue("User exists", !result && userAccountService.retrieve(userAccount1.getEmail()).isPresent());
 	}
 	
 	@Test

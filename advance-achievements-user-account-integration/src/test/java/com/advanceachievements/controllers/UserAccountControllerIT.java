@@ -72,7 +72,7 @@ public class UserAccountControllerIT {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "")
 				.param("password", correctAccountDto.getPassword()))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userAccountDto", "email"));
 	}
 	
@@ -83,7 +83,7 @@ public class UserAccountControllerIT {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", correctAccountDto.getEmail())
 				.param("password", ""))
-		.andExpect(status().is3xxRedirection())
+		.andExpect(status().isOk())
 		.andExpect(model().attributeHasFieldErrors("userAccountDto", "password"));
 	}
 	
@@ -94,7 +94,7 @@ public class UserAccountControllerIT {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", " ")
 				.param("password", correctAccountDto.getPassword()))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userAccountDto", "email"));
 	}
 	
@@ -105,7 +105,7 @@ public class UserAccountControllerIT {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", correctAccountDto.getEmail())
 				.param("password", " "))
-		.andExpect(status().is3xxRedirection())
+		.andExpect(status().isOk())
 		.andExpect(model().attributeHasFieldErrors("userAccountDto", "password"));
 	}
 	
@@ -115,7 +115,7 @@ public class UserAccountControllerIT {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newaccount")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("password", correctAccountDto.getPassword()))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userAccountDto", "email"));
 	}
 	
@@ -125,7 +125,7 @@ public class UserAccountControllerIT {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newaccount")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", correctAccountDto.getEmail()))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userAccountDto", "password"));
 	}
 	
@@ -136,7 +136,7 @@ public class UserAccountControllerIT {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "example")
 				.param("password", correctAccountDto.getPassword()))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userAccountDto", "email"));
 	}
 	
@@ -147,7 +147,7 @@ public class UserAccountControllerIT {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "example@example")
 				.param("password", correctAccountDto.getPassword()))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userAccountDto", "email"));
 	}
 
@@ -158,7 +158,7 @@ public class UserAccountControllerIT {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "example@example.")
 				.param("password", correctAccountDto.getPassword()))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userAccountDto", "email"));
 	}
 
@@ -169,7 +169,7 @@ public class UserAccountControllerIT {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", correctAccountDto.getEmail())
 				.param("password", "1234"))
-		.andExpect(status().is3xxRedirection())
+		.andExpect(status().isOk())
 		.andExpect(model().attributeHasFieldErrors("userAccountDto", "password"));
 	}
 	
