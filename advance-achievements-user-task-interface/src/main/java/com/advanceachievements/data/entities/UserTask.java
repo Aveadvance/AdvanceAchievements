@@ -64,6 +64,10 @@ public class UserTask {
 		this.state = state;
 		this.creationDate = creationDate;
 	}
+	
+	public long getId() {
+		return id;
+	}
 
 	public String getTitle() {
 		return title;

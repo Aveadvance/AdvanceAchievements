@@ -1,5 +1,7 @@
 package com.advanceachievements.data.services;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.advanceachievements.data.dao.UserAccountDao;
 import com.advanceachievements.data.entities.UserAccount;
+import com.advanceachievements.data.entities.Workspace;
+import com.advanceachievements.data.entities.WorkspaceType;
 
 @Service
 public class UserAccountServiceBasic implements UserAccountService {
 	
 	@Autowired
-	UserAccountDao userAccountDao;
+	private UserAccountDao userAccountDao;
+	
+	@Autowired
+	private WorkspaceService workspaceService;
 
 	@Override
 	@Transactional
@@ -38,6 +45,7 @@ public class UserAccountServiceBasic implements UserAccountService {
 		boolean result = retrieve(userAccount.getEmail()).isPresent();
 		if (!result) {
 			userAccountDao.create(userAccount);
+			workspaceService.create(new Workspace(WorkspaceType.PRIVATE, new HashSet<>(Arrays.asList(userAccount))));
 		}
 		return !result;
 	}

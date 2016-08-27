@@ -47,7 +47,12 @@ public class UserTaskController {
 		if (bindingResult.hasErrors()) {
 			return "/create-task-page";
 		}
-		userTaskService.create(userTaskDto.getTitle(), userTaskDto.getDescription(), userTaskDto.getPriority());
+		if (userTaskDto.getUserTaskCategoryId() == 0)
+			userTaskService.create(userTaskDto.getTitle(), userTaskDto.getDescription()
+				, userTaskDto.getPriority());
+		else
+			userTaskService.create(userTaskDto.getTitle(), userTaskDto.getDescription()
+					, userTaskDto.getPriority(), userTaskDto.getUserTaskCategoryId());
 		return "redirect:/personal-tasks-page";
 	}
 
@@ -56,7 +61,7 @@ public class UserTaskController {
 		if (bindingResult.hasErrors()) {
 			return "/create-task-category-page";
 		}
-		userTaskCategoryService.create(userTaskCategoryDto.getName());
+		userTaskCategoryService.create(userTaskCategoryDto.getWorkspaceId(), userTaskCategoryDto.getName());
 		return "redirect:/personal-tasks-page";
 	}
 

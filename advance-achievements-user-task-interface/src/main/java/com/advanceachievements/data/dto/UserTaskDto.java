@@ -16,6 +16,8 @@ public class UserTaskDto {
 	
 	@NotNull
 	private Priority priority;
+	
+	private long userTaskCategoryId;
 
 	public UserTaskDto() {}
 
@@ -41,6 +43,14 @@ public class UserTaskDto {
 
 	public void setPriority(Priority priority) {
 		this.priority = priority;
+	}
+
+	public long getUserTaskCategoryId() {
+		return userTaskCategoryId;
+	}
+
+	public void setUserTaskCategoryId(long userTaskCategoryId) {
+		this.userTaskCategoryId = userTaskCategoryId;
 	}
 
 }

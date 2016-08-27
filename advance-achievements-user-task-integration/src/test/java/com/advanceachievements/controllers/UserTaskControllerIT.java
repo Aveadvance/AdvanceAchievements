@@ -30,9 +30,11 @@ import com.advanceachievements.data.entities.UserAccount;
 import com.advanceachievements.data.entities.UserTask;
 import com.advanceachievements.data.entities.UserTaskCategory;
 import com.advanceachievements.data.entities.UserTaskState;
+import com.advanceachievements.data.entities.Workspace;
 import com.advanceachievements.data.services.UserAccountService;
 import com.advanceachievements.data.services.UserTaskCategoryService;
 import com.advanceachievements.data.services.UserTaskService;
+import com.advanceachievements.data.services.WorkspaceService;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations={"classpath:com/advanceachievements/configurations/dispatcher-servlet.xml"
@@ -56,6 +58,9 @@ public class UserTaskControllerIT {
 	
 	@Autowired
 	private UserTaskCategoryService userTaskCategoryService;
+	
+	@Autowired
+	private WorkspaceService workspaceService;
 	
 	UserAccount testUserAccount = new UserAccount("example@example.com", "12345"
 			, new HashSet<>(Arrays.asList(Authority.ROLE_USER)), true);
@@ -153,15 +158,44 @@ public class UserTaskControllerIT {
 	@Transactional
 	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
 	public void createNewTaskCategory() throws Exception {
+		Workspace privateWorkspace = workspaceService.retrieveAll().get(0);
+		// TODO: Logger: System.out.println(privateWorkspace.getId()+" "+privateWorkspace.getType());
 		String categoryName = "New category";
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtaskcategory")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("name", categoryName))
+				.param("name", categoryName)
+				.param("workspaceId", Long.toString(privateWorkspace.getId())))
 		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskCategoryDto"));
 		
-		UserTaskCategory userTaskCategory = userTaskCategoryService.retrieve(1).get();
+		UserTaskCategory userTaskCategory = userTaskCategoryService.retrieveAll(privateWorkspace.getId()).get(0);
 		assertEquals("Category is saved.", categoryName, userTaskCategory.getName());
+		assertEquals("Category has workspace.", privateWorkspace.getId(), userTaskCategory.getWorkspace().getId());
+	}
+	
+	@Test
+	@Transactional
+	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
+	// TODO Add debug information
+	public void createTaskInCategory() throws Exception {
+		String categoryName = "Category";
+		Workspace privateWorkspace = workspaceService.retrieveAll().get(0);
+		userTaskCategoryService.create(privateWorkspace.getId(), categoryName);
+		List<UserTaskCategory> userTaskCategories = userTaskCategoryService.retrieveAll(privateWorkspace.getId());
+		UserTaskCategory userTaskCategory = userTaskCategories.get(0);
+		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("title", correctUserTask.getTitle())
+				.param("description", correctUserTask.getDescription())
+				.param("priority", "MIDDLE")
+				.param("userTaskCategoryId", Long.toString(userTaskCategory.getId())))
+		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskDto"));
+		
+		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail());
+		userTaskCategory = userTaskCategoryService.retrieveAll(privateWorkspace.getId()).get(0);
+		assertEquals("Task should be in category", retrievedUserTasks.get(0)
+				, userTaskCategory.getUserTasks().get(0));
 	}
 
 }

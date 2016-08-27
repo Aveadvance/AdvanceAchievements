@@ -10,6 +10,7 @@
 		<class>com.advanceachievements.data.entities.UserAccount</class>
 		<class>com.advanceachievements.data.entities.UserTask</class>
 		<class>com.advanceachievements.data.entities.UserTaskCategory</class>
+		<class>com.advanceachievements.data.entities.Workspace</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
@@ -35,6 +36,7 @@
 		<class>com.advanceachievements.data.entities.UserAccount</class>
 		<class>com.advanceachievements.data.entities.UserTask</class>
 		<class>com.advanceachievements.data.entities.UserTaskCategory</class>
+		<class>com.advanceachievements.data.entities.Workspace</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
