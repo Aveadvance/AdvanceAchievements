@@ -1,8 +1,10 @@
-package com.advanceachievements.data.entities;
+package com.advanceachievements.data.dto;
 
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.advanceachievements.data.entities.Priority;
 
 public class UserTaskDto {
 	

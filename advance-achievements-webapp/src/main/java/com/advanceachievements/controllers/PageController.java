@@ -8,7 +8,13 @@ public class PageController {
 
 	@RequestMapping("/")
 	public String initialPage() {
-		return "index";
+		/*
+		 * Check if have communities(companies) than list to select personal or community scope.
+		 * if (!getCommunityList().empty())
+		 * return community space
+		 * Check on password to personal scope
+		 */
+		return "redirect:/personal-tasks-page";
 	}
 
 	@RequestMapping("/access-denied-page")

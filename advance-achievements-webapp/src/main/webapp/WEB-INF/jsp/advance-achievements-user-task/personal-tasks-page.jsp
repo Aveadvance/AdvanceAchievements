@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
-<%--   <head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -53,11 +54,15 @@
 
     <!-- Begin page content -->
     <div class="container">
-      <div class="page-header">
-        <h1>Sticky footer with fixed navbar</h1>
-      </div>
-      <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body &gt; .container</code>.</p>
-      <p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p>
+    	<a href="${ pageContext.request.contextPath }/create-task-page" class="btn btn-success">Create new task</a>
+		<div class="list-group">
+			<c:forEach items="${ personalTasks }" var="task">
+				<a href="#" class="list-group-item">
+					<h4 class="list-group-item-heading">${ task.title }</h4>
+					<p class="list-group-item-text">${ task.description }</p>
+				</a>
+			</c:forEach>
+		</div>
     </div>
 
     <footer class="footer">
@@ -73,5 +78,5 @@
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="../../dist/js/bootstrap.min.js"></script> -->
-  </body> --%>
+  </body>
 </html>
