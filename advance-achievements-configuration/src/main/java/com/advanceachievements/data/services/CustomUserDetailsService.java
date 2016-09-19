@@ -18,6 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.advanceachievements.data.entities.Authority;
 import com.advanceachievements.data.entities.UserAccount;
 
+/**
+ * Service for Spring Security database authorization and authentication.
+ * @author Aveadvance
+ *
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 	
