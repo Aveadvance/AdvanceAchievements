@@ -170,4 +170,12 @@
   	</dependencies>
   </dependencyManagement>
   
+  <dependencies>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+  		<artifactId>advance-achievements-user-account-integration</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
+  </dependencies>
+  
 </project>
