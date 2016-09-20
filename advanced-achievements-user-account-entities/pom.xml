@@ -7,22 +7,20 @@
     <artifactId>advance-achievements-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>advance-achievements-user-account-interface</artifactId>
-  <name>advance-achievements-user-account-interface</name>
+  <artifactId>advanced-achievements-user-account-entities</artifactId>
+  <name>advanced-achievements-user-account-entities</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
   	<dependency>
-  		<groupId>${project.groupId}</groupId>
-  		<artifactId>advance-achievements-interfaces</artifactId>
-  		<version>${project.version}</version>
+  		<groupId>org.hibernate.javax.persistence</groupId>
+  		<artifactId>hibernate-jpa-2.1-api</artifactId>
   	</dependency>
   	<dependency>
-  		<groupId>${project.groupId}</groupId>
-  		<artifactId>advanced-achievements-user-account-entities</artifactId>
-  		<version>${project.version}</version>
+  		<groupId>org.hibernate</groupId>
+  		<artifactId>hibernate-validator</artifactId>
   	</dependency>
   </dependencies>
 </project>

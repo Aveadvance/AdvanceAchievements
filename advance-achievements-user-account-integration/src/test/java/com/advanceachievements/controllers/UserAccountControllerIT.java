@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.advanceachievements.data.dto.UserAccountDto;
-import com.advanceachievements.data.entities.UserAccount;
 import com.advanceachievements.data.services.UserAccountService;
+import com.aveadvance.advancedachievements.data.entities.UserAccount;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations ={"classpath:com/advanceachievements/configurations/dispatcher-servlet.xml"

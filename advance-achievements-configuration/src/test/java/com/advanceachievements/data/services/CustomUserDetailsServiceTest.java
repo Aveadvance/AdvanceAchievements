@@ -14,8 +14,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.advanceachievements.data.entities.Authority;
-import com.advanceachievements.data.entities.UserAccount;
+import com.aveadvance.advancedachievements.data.entities.Authority;
+import com.aveadvance.advancedachievements.data.entities.UserAccount;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations = {"classpath:com/advanceachievements/configurations/data-test-context.xml"

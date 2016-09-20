@@ -15,8 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.advanceachievements.data.entities.Authority;
-import com.advanceachievements.data.entities.UserAccount;
+import com.aveadvance.advancedachievements.data.entities.Authority;
+import com.aveadvance.advancedachievements.data.entities.UserAccount;
 
 /**
  * Service for Spring Security database authorization and authentication.

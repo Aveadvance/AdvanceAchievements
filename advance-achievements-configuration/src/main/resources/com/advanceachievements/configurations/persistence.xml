@@ -7,7 +7,7 @@
 	<persistence-unit name="development-persistence">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
-		<class>com.advanceachievements.data.entities.UserAccount</class>
+		<class>com.aveadvance.advancedachievements.data.entities.UserAccount</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
@@ -30,7 +30,7 @@
 	<persistence-unit name="production-persistence">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
-		<class>com.advanceachievements.data.entities.UserAccount</class>
+		<class>com.aveadvance.advancedachievements.data.entities.UserAccount</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>

@@ -1,4 +1,4 @@
-package com.advanceachievements.data.entities;
+package com.aveadvance.advancedachievements.data.entities;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

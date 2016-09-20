@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.advanceachievements.data.dao.UserAccountDao;
-import com.advanceachievements.data.entities.UserAccount;
+import com.aveadvance.advancedachievements.data.entities.UserAccount;
 
 @Service
 public class UserAccountServiceBasic implements UserAccountService {
