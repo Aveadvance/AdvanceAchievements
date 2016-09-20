@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.advanceachievements.data.dao.UserAccountDao;
 import com.advanceachievements.data.entities.UserAccount;
-import com.advanceachievements.data.entities.Workspace;
-import com.advanceachievements.data.entities.WorkspaceType;
+import com.aveadvance.advancedachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.entities.WorkspaceType;
 
 @Service
 public class UserAccountServiceBasic implements UserAccountService {

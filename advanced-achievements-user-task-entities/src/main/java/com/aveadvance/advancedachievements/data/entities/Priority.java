@@ -1,4 +1,4 @@
-package com.advanceachievements.data.entities;
+package com.aveadvance.advancedachievements.data.entities;
 
 public enum Priority {
 	

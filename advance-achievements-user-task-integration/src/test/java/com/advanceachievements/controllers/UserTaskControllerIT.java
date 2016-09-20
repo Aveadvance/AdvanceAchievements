@@ -25,16 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.advanceachievements.data.entities.Authority;
-import com.advanceachievements.data.entities.Priority;
 import com.advanceachievements.data.entities.UserAccount;
-import com.advanceachievements.data.entities.UserTask;
-import com.advanceachievements.data.entities.UserTaskCategory;
-import com.advanceachievements.data.entities.UserTaskState;
-import com.advanceachievements.data.entities.Workspace;
 import com.advanceachievements.data.services.UserAccountService;
 import com.advanceachievements.data.services.UserTaskCategoryService;
 import com.advanceachievements.data.services.UserTaskService;
 import com.advanceachievements.data.services.WorkspaceService;
+import com.aveadvance.advancedachievements.data.entities.Priority;
+import com.aveadvance.advancedachievements.data.entities.UserTask;
+import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
+import com.aveadvance.advancedachievements.data.entities.UserTaskState;
+import com.aveadvance.advancedachievements.data.entities.Workspace;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations={"classpath:com/advanceachievements/configurations/dispatcher-servlet.xml"

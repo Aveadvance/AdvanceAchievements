@@ -3,8 +3,8 @@ package com.advanceachievements.data.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.advanceachievements.data.entities.Priority;
-import com.advanceachievements.data.entities.UserTask;
+import com.aveadvance.advancedachievements.data.entities.Priority;
+import com.aveadvance.advancedachievements.data.entities.UserTask;
 
 public interface UserTaskService {
 

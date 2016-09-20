@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.advanceachievements.data.dao.UserTaskDao;
-import com.advanceachievements.data.entities.Priority;
 import com.advanceachievements.data.entities.UserAccount;
-import com.advanceachievements.data.entities.UserTask;
-import com.advanceachievements.data.entities.UserTaskCategory;
-import com.advanceachievements.data.entities.UserTaskState;
+import com.aveadvance.advancedachievements.data.entities.Priority;
+import com.aveadvance.advancedachievements.data.entities.UserTask;
+import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
+import com.aveadvance.advancedachievements.data.entities.UserTaskState;
 
 @Service
 public class UserTaskServiceBasic implements UserTaskService {

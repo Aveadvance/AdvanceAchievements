@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.advanceachievements.data.dao.WorkspaceDao;
 import com.advanceachievements.data.entities.UserAccount;
-import com.advanceachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.entities.Workspace;
 
 @Service
 public class WorkspaceServiceBasic implements WorkspaceService {

@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.advanceachievements.data.entities.Priority;
+import com.aveadvance.advancedachievements.data.entities.Priority;
 
 public class UserTaskDto {
 	

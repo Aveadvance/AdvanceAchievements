@@ -20,6 +20,7 @@
     <module>advance-achievements-user-task-interface</module>
     <module>advance-achievements-user-task-repository</module>
     <module>advance-achievements-user-task-integration</module>
+    <module>advanced-achievements-user-task-entities</module>
   </modules>
   
   <properties>

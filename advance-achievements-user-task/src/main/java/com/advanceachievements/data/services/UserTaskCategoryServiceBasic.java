@@ -11,8 +11,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import com.advanceachievements.data.dao.UserTaskCategoryDao;
-import com.advanceachievements.data.entities.UserTaskCategory;
-import com.advanceachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
+import com.aveadvance.advancedachievements.data.entities.Workspace;
 
 @Service
 public class UserTaskCategoryServiceBasic implements UserTaskCategoryService {

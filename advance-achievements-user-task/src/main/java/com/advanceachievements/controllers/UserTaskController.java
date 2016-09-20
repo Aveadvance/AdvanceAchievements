@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.advanceachievements.data.dto.UserTaskCategoryDto;
 import com.advanceachievements.data.dto.UserTaskDto;
-import com.advanceachievements.data.entities.UserTask;
 import com.advanceachievements.data.services.UserTaskCategoryService;
 import com.advanceachievements.data.services.UserTaskService;
+import com.aveadvance.advancedachievements.data.entities.UserTask;
 
 @Controller
 public class UserTaskController {

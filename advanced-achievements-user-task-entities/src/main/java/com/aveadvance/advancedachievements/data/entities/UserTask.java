@@ -1,4 +1,4 @@
-package com.advanceachievements.data.entities;
+package com.aveadvance.advancedachievements.data.entities;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.advanceachievements.data.entities.UserAccount;
 
 @Entity
 @Table(name="user_tasks")

@@ -19,10 +19,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.advanceachievements.data.entities.Authority;
-import com.advanceachievements.data.entities.Priority;
 import com.advanceachievements.data.entities.UserAccount;
-import com.advanceachievements.data.entities.UserTask;
-import com.advanceachievements.data.entities.UserTaskState;
+import com.aveadvance.advancedachievements.data.entities.Priority;
+import com.aveadvance.advancedachievements.data.entities.UserTask;
+import com.aveadvance.advancedachievements.data.entities.UserTaskState;
+
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations={"classpath:com/advanceachievements/configurations/service-context.xml"

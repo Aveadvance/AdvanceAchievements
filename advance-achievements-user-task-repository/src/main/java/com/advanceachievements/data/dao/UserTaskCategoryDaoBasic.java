@@ -13,8 +13,8 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import com.advanceachievements.data.entities.UserTaskCategory;
-import com.advanceachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
+import com.aveadvance.advancedachievements.data.entities.Workspace;
 
 @Repository
 public class UserTaskCategoryDaoBasic extends AbstractDao<UserTaskCategory, Long> implements UserTaskCategoryDao {
@@ -22,7 +22,7 @@ public class UserTaskCategoryDaoBasic extends AbstractDao<UserTaskCategory, Long
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public UserTaskCategoryDaoBasic(@Value(value="com.advanceachievements.data.entities.UserTaskCategory") Class<UserTaskCategory> entityClass) {
+	public UserTaskCategoryDaoBasic(@Value(value="com.aveadvance.advancedachievements.data.entities.UserTaskCategory") Class<UserTaskCategory> entityClass) {
 		super(entityClass);
 	}
 

@@ -1,4 +1,4 @@
-package com.advanceachievements.data.entities;
+package com.aveadvance.advancedachievements.data.entities;
 
 import java.util.Set;
 
@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.advanceachievements.data.entities.UserAccount;
 
 @Entity
 @Table(name="workspaces")

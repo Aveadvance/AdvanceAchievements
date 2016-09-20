@@ -3,7 +3,7 @@ package com.advanceachievements.data.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.advanceachievements.data.entities.UserTaskCategory;
+import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 
 public interface UserTaskCategoryService {
 

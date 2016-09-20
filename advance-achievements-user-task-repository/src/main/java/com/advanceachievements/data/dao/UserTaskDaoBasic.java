@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.advanceachievements.data.entities.UserAccount;
-import com.advanceachievements.data.entities.UserTask;
+import com.aveadvance.advancedachievements.data.entities.UserTask;
 
 @Repository
 public class UserTaskDaoBasic extends AbstractDao<UserTask, Long> implements UserTaskDao {
@@ -22,7 +22,7 @@ public class UserTaskDaoBasic extends AbstractDao<UserTask, Long> implements Use
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public UserTaskDaoBasic(@Value(value="com.advanceachievements.data.entities.UserTask") Class<UserTask> entityClass) {
+	public UserTaskDaoBasic(@Value(value="com.aveadvance.advancedachievements.data.entities.UserTask") Class<UserTask> entityClass) {
 		super(entityClass);
 	}
 

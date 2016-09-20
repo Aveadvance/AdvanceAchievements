@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.advanceachievements.data.entities.UserAccount;
-import com.advanceachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.entities.Workspace;
 
 @Repository
 public class WorkspaceDaoBasic extends AbstractDao<Workspace, Long> implements WorkspaceDao {
@@ -23,7 +23,7 @@ public class WorkspaceDaoBasic extends AbstractDao<Workspace, Long> implements W
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public WorkspaceDaoBasic(@Value("com.advanceachievements.data.entities.Workspace") Class<Workspace> entityClass) {
+	public WorkspaceDaoBasic(@Value("com.aveadvance.advancedachievements.data.entities.Workspace") Class<Workspace> entityClass) {
 		super(entityClass);
 	}
 
