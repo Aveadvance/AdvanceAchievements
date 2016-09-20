@@ -14,25 +14,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
-  <build>
-  	<plugins>
-        <plugin>
-        	<groupId>org.codehaus.mojo</groupId>
-        	<artifactId>findbugs-maven-plugin</artifactId>
-        </plugin>
-        
-        <plugin>
-        	<groupId>org.apache.maven.plugins</groupId>
-        	<artifactId>maven-pmd-plugin</artifactId>
-        </plugin>
-        
-        <plugin>
-        	<groupId>org.apache.maven.plugins</groupId>
-        	<artifactId>maven-checkstyle-plugin</artifactId>
-        </plugin>
-  	</plugins>
-  </build>
-  
   <dependencies>
     <dependency>
     	<groupId>${project.groupId}</groupId>
