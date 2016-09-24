@@ -33,7 +33,9 @@ public abstract class AbstractDao<E,I> implements Repo<E,I> {
 
 	@Override
 	public void delete(I id) {
-		throw new UnsupportedOperationException();
+		E entity = entityManager.getReference(entityClass, id);
+		entityManager.remove(entity);
+		//entityManager.flush();
 	}
 
 //	@Override

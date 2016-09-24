@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.advanceachievements.data.dto.UserAccountDto;
-import com.advanceachievements.data.services.UserAccountService;
+import com.aveadvance.advancedachievements.data.services.UserAccountService;
 
 @Controller
 public class UserAccountController {
@@ -19,6 +19,7 @@ public class UserAccountController {
 	
 	@RequestMapping("/newaccount")
 	public String newAccount(@Validated UserAccountDto userAccountDto, BindingResult bindingResult, Model model) {
+		
 		
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("exceptions", bindingResult);

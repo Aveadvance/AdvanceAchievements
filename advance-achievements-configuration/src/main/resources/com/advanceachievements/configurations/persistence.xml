@@ -7,7 +7,7 @@
 	<persistence-unit name="development-persistence">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
-		<class>com.advanceachievements.data.entities.UserAccount</class>
+		<class>com.aveadvance.advancedachievements.data.entities.UserAccount</class>
 		<class>com.aveadvance.advancedachievements.data.entities.UserTask</class>
 		<class>com.aveadvance.advancedachievements.data.entities.UserTaskCategory</class>
 		<class>com.aveadvance.advancedachievements.data.entities.Workspace</class>
@@ -33,7 +33,7 @@
 	<persistence-unit name="production-persistence">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
-		<class>com.advanceachievements.data.entities.UserAccount</class>
+		<class>com.aveadvance.advancedachievements.data.entities.UserAccount</class>
 		<class>com.aveadvance.advancedachievements.data.entities.UserTask</class>
 		<class>com.aveadvance.advancedachievements.data.entities.UserTaskCategory</class>
 		<class>com.aveadvance.advancedachievements.data.entities.Workspace</class>

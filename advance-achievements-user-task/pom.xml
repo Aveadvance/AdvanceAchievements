@@ -17,12 +17,10 @@
   	<dependency>
   		<groupId>${project.groupId}</groupId>
   		<artifactId>advance-achievements-user-task-interface</artifactId>
-  		<version>${project.version}</version>
   	</dependency>
   	<dependency>
   		<groupId>${project.groupId}</groupId>
-  		<artifactId>advance-achievements-user-task-repository</artifactId>
-  		<version>${project.version}</version>
+  		<artifactId>advanced-achievements-user-task-category-interface</artifactId>
   	</dependency>
   	<dependency>
   		<groupId>org.springframework</groupId>
@@ -39,6 +37,10 @@
   	<dependency>
   		<groupId>org.hibernate</groupId>
   		<artifactId>hibernate-validator</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>javax.servlet</groupId>
+  		<artifactId>javax.servlet-api</artifactId>
   	</dependency>
   </dependencies>
 </project>

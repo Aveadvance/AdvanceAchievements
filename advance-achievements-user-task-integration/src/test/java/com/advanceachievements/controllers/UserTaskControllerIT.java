@@ -24,17 +24,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.advanceachievements.data.entities.Authority;
-import com.advanceachievements.data.entities.UserAccount;
-import com.advanceachievements.data.services.UserAccountService;
-import com.advanceachievements.data.services.UserTaskCategoryService;
 import com.advanceachievements.data.services.UserTaskService;
-import com.advanceachievements.data.services.WorkspaceService;
+import com.aveadvance.advancedachievements.data.entities.Authority;
 import com.aveadvance.advancedachievements.data.entities.Priority;
+import com.aveadvance.advancedachievements.data.entities.UserAccount;
 import com.aveadvance.advancedachievements.data.entities.UserTask;
-import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.entities.UserTaskState;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.services.UserAccountService;
+import com.aveadvance.advancedachievements.data.services.WorkspaceService;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations={"classpath:com/advanceachievements/configurations/dispatcher-servlet.xml"
@@ -57,15 +55,12 @@ public class UserTaskControllerIT {
 	private UserTaskService userTaskService;
 	
 	@Autowired
-	private UserTaskCategoryService userTaskCategoryService;
-	
-	@Autowired
 	private WorkspaceService workspaceService;
 	
 	UserAccount testUserAccount = new UserAccount("example@example.com", "12345"
 			, new HashSet<>(Arrays.asList(Authority.ROLE_USER)), true);
 	
-	UserTask correctUserTask = new UserTask("New task", "My new task"
+	UserTask testUserTask = new UserTask(null, "New task", "My new task"
 			, Priority.MIDDLE, testUserAccount, UserTaskState.TO_DO, LocalDateTime.now());
 	
 	@Before
@@ -77,34 +72,36 @@ public class UserTaskControllerIT {
 		 */
 
 		/* Create account to save the task. */
-		userAccountService.create(testUserAccount);
+		userAccountService.create(testUserAccount.getEmail(), testUserAccount.getPassword());
 	}
 	
 	@Test
 	@Transactional
 	@WithMockUser(username="example@example.com", password="12345",authorities={"ROLE_USER"})
 	public void createNewTaskCorrectly() throws Exception {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
+				.sessionAttr("workspaceId", workspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("title", correctUserTask.getTitle())
-				.param("description", correctUserTask.getDescription())
-				.param("priority", correctUserTask.getPriority().name()))
+				.param("title", testUserTask.getTitle())
+				.param("description", testUserTask.getDescription())
+				.param("priority", testUserTask.getPriority().name()))
 		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskDto"));
 		
 		
-		UserTask recievedUserTask = userTaskService.retrieve(testUserAccount.getEmail()).get(0);
-		assertEquals("Task saved in database.", correctUserTask.getTitle(), recievedUserTask.getTitle());
-		assertEquals("Task saved in database.", correctUserTask.getDescription(), recievedUserTask.getDescription());
-		assertEquals("Task saved in database.", correctUserTask.getPriority(), recievedUserTask.getPriority());
+		UserTask recievedUserTask = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId()).get(0);
+		assertEquals("Task saved in database.", testUserTask.getTitle(), recievedUserTask.getTitle());
+		assertEquals("Task saved in database.", testUserTask.getDescription(), recievedUserTask.getDescription());
+		assertEquals("Task saved in database.", testUserTask.getPriority(), recievedUserTask.getPriority());
 	}
 	
 	@Test
 	public void withoutTaskTitle() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("description", correctUserTask.getDescription())
-				.param("priority", correctUserTask.getPriority().name()))
+				.param("description", testUserTask.getDescription())
+				.param("priority", testUserTask.getPriority().name()))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userTaskDto", "title"));
 	}
@@ -114,8 +111,8 @@ public class UserTaskControllerIT {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("title", "")
-				.param("description", correctUserTask.getDescription())
-				.param("priority", correctUserTask.getPriority().name()))
+				.param("description", testUserTask.getDescription())
+				.param("priority", testUserTask.getPriority().name()))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userTaskDto", "title"));
 	}
@@ -124,8 +121,8 @@ public class UserTaskControllerIT {
 	public void nonExistingPriority() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("title", correctUserTask.getTitle())
-				.param("description", correctUserTask.getDescription())
+				.param("title", testUserTask.getTitle())
+				.param("description", testUserTask.getDescription())
 				.param("priority", "PRIORITY"))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("userTaskDto", "priority"));
@@ -135,15 +132,18 @@ public class UserTaskControllerIT {
 	@Transactional
 	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
 	public void ruSymbolicTittleAndDescription() throws Exception {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
+				.sessionAttr("workspaceId", workspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("workspaceId", Long.toString(workspace.getId()))
 				.param("title", "Ыъзфычсмюб")
 				.param("description", "Новый текст")
 				.param("priority", "MIDDLE"))
 		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskDto"));
 		
-		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail());
+		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId());
 		assertEquals("Russian symbolic in title", "Ыъзфычсмюб", retrievedUserTasks.get(0).getTitle());
 		assertEquals("Russian symbolic in description", "Новый текст", retrievedUserTasks.get(0).getDescription());
 	}
@@ -153,49 +153,68 @@ public class UserTaskControllerIT {
 	
 	@Test
 	public void largeDescription(){}
-	
+
 	@Test
 	@Transactional
 	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
-	public void createNewTaskCategory() throws Exception {
-		Workspace privateWorkspace = workspaceService.retrieveAll().get(0);
-		// TODO: Logger: System.out.println(privateWorkspace.getId()+" "+privateWorkspace.getType());
-		String categoryName = "New category";
-		mockMvc.perform(MockMvcRequestBuilders.post("/newtaskcategory")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("name", categoryName)
-				.param("workspaceId", Long.toString(privateWorkspace.getId())))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskCategoryDto"));
+	public void deleteTask() throws Exception {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
 		
-		UserTaskCategory userTaskCategory = userTaskCategoryService.retrieveAll(privateWorkspace.getId()).get(0);
-		assertEquals("Category is saved.", categoryName, userTaskCategory.getName());
-		assertEquals("Category has workspace.", privateWorkspace.getId(), userTaskCategory.getWorkspace().getId());
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getTitle()
+				, testUserTask.getPriority());
+		
+		List<UserTask> userTasks = userTaskService.retrieve("example@example.com", workspace.getId());
+		
+		assertEquals("Task created.", testUserTask.getTitle(), userTasks.get(0).getTitle());
+		
+		mockMvc.perform(MockMvcRequestBuilders.post("/deleteusertask")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("workspaceId", Long.toString(workspace.getId()))
+				.param("id", Long.toString(userTasks.get(0).getId())))
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+		
+		userTasks = userTaskService.retrieve("example@example.com", workspace.getId());
+		
+		assertEquals("Task deleted.", true, userTasks.isEmpty());
 	}
-	
+
+	/**
+	 * Test task update.
+	 * @throws Exception
+	 */
 	@Test
 	@Transactional
 	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
-	// TODO Add debug information
-	public void createTaskInCategory() throws Exception {
-		String categoryName = "Category";
-		Workspace privateWorkspace = workspaceService.retrieveAll().get(0);
-		userTaskCategoryService.create(privateWorkspace.getId(), categoryName);
-		List<UserTaskCategory> userTaskCategories = userTaskCategoryService.retrieveAll(privateWorkspace.getId());
-		UserTaskCategory userTaskCategory = userTaskCategories.get(0);
-		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("title", correctUserTask.getTitle())
-				.param("description", correctUserTask.getDescription())
-				.param("priority", "MIDDLE")
-				.param("userTaskCategoryId", Long.toString(userTaskCategory.getId())))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskDto"));
+	public void updateTask() throws Exception {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
 		
-		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail());
-		userTaskCategory = userTaskCategoryService.retrieveAll(privateWorkspace.getId()).get(0);
-		assertEquals("Task should be in category", retrievedUserTasks.get(0)
-				, userTaskCategory.getUserTasks().get(0));
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getTitle()
+				, testUserTask.getPriority());
+		
+		UserTask userTask = userTaskService.retrieve("example@example.com", workspace.getId()).get(0);
+		
+		assertEquals("Task created.", testUserTask.getTitle(), userTask.getTitle());
+		
+		mockMvc.perform(MockMvcRequestBuilders.post("/updateusertask")
+				.sessionAttr("workspaceId", workspace.getId())
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("id", Long.toString(userTask.getId()))
+				.param("title", "New title")
+				.param("description", "New new new text.")
+				.param("priority", "HIGH"))
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskDto"));
+		
+		UserTask updatedUserTask = userTaskService.retrieve("example@example.com", workspace.getId()).get(0);
+
+		assertEquals("Task updated.", userTask.getId(), updatedUserTask.getId());
+		assertEquals("Task updated.", "New title", updatedUserTask.getTitle());
+		assertEquals("Task updated.", "New new new text.", updatedUserTask.getDescription());
+		assertEquals("Task updated.", Priority.HIGH, updatedUserTask.getPriority());
+		assertEquals("Task updated.", userTask.getOwner(), updatedUserTask.getOwner());
+		assertEquals("Task updated.", userTask.getState(), updatedUserTask.getState());
+		assertEquals("Task updated.", userTask.getCategory(), updatedUserTask.getCategory());
+		assertEquals("Task updated.", userTask.getCreationDate(), updatedUserTask.getCreationDate());
 	}
 
 }

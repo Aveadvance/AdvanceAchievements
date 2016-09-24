@@ -2,7 +2,7 @@ package com.advanceachievements.data.dao;
 
 import java.util.Optional;
 
-import com.advanceachievements.data.entities.UserAccount;
+import com.aveadvance.advancedachievements.data.entities.UserAccount;
 
 public interface UserAccountDao extends Repo<UserAccount, Long> {
 

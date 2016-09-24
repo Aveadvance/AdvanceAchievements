@@ -18,11 +18,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.advanceachievements.data.entities.Authority;
-import com.advanceachievements.data.entities.UserAccount;
+import com.aveadvance.advancedachievements.data.entities.Authority;
 import com.aveadvance.advancedachievements.data.entities.Priority;
+import com.aveadvance.advancedachievements.data.entities.UserAccount;
 import com.aveadvance.advancedachievements.data.entities.UserTask;
 import com.aveadvance.advancedachievements.data.entities.UserTaskState;
+import com.aveadvance.advancedachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.services.UserAccountService;
+import com.aveadvance.advancedachievements.data.services.WorkspaceService;
 
 
 @ActiveProfiles("development")
@@ -33,15 +36,18 @@ import com.aveadvance.advancedachievements.data.entities.UserTaskState;
 public class UserTaskServiceIT {
 	
 	@Autowired
-	private UserTaskService userTaskService;
+	private UserAccountService userAccountService;
 	
 	@Autowired
-	private UserAccountService userAccountService;
+	private WorkspaceService workspaceService;
+	
+	@Autowired
+	private UserTaskService userTaskService;
 	
 	UserAccount testUserAccount = new UserAccount("example@example.com", "12345"
 			, new HashSet<>(Arrays.asList(Authority.ROLE_USER)), true);
 	
-	private UserTask testUserTask = new UserTask("Title of the task", "Description of task"
+	private UserTask testUserTask = new UserTask(null, "Title of the task", "Description of task"
 			, Priority.MIDDLE, testUserAccount, UserTaskState.TO_DO, LocalDateTime.now());
 
 	@Before
@@ -50,15 +56,16 @@ public class UserTaskServiceIT {
 		 * Create task method needs authorization and the previously created user.
 		 * Values of parameters in @WithMockUser and in the previously created user should correlate.
 		 */
-		userAccountService.create(testUserAccount);
+		userAccountService.create(testUserAccount.getEmail(), testUserAccount.getPassword());
 	}
 	
 	@Test
 	@Transactional
 	@WithMockUser(username="example@example.com",authorities={"ROLE_USER"})
 	public void defaultOwnerOfUserTask() {
-		userTaskService.create(testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
-		UserTask retrievedUserTask = userTaskService.retrieve(testUserAccount.getEmail()).get(0);
+		Workspace workspace = workspaceService.retrieveAll().get(0);
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+		UserTask retrievedUserTask = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId()).get(0);
 		assertEquals("Default owner should be authenticated user", "example@example.com", retrievedUserTask.getOwner().getEmail());
 	}
 	
@@ -66,9 +73,10 @@ public class UserTaskServiceIT {
 	@Transactional
 	@WithMockUser(username="example@example.com",authorities={"ROLE_USER"})
 	public void userTaskCreationDate() {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
 		LocalDateTime start = LocalDateTime.now();
-		userTaskService.create(testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
-		UserTask retrievedUserTask = userTaskService.retrieve(testUserAccount.getEmail()).get(0);
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+		UserTask retrievedUserTask = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId()).get(0);
 		LocalDateTime stop = LocalDateTime.now();
 		assertTrue("Right creation time was set up"
 				, retrievedUserTask.getCreationDate().isEqual(start) 
@@ -81,8 +89,9 @@ public class UserTaskServiceIT {
 	@Transactional
 	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
 	public void userTaskDefaultState() {
-		userTaskService.create(testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
-		UserTask retrievedUserTask = userTaskService.retrieve(testUserAccount.getEmail()).get(0);
+		Workspace workspace = workspaceService.retrieveAll().get(0);
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+		UserTask retrievedUserTask = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId()).get(0);
 		assertEquals("Default task state should be TO_DO.", UserTaskState.TO_DO, retrievedUserTask.getState());
 	}
 	
@@ -90,10 +99,11 @@ public class UserTaskServiceIT {
 	@Transactional
 	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
 	public void createMultipleTasks() {
-		userTaskService.create(testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
-		userTaskService.create(testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
-		userTaskService.create(testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
-		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail());
+		Workspace workspace = workspaceService.retrieveAll().get(0);
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId());
 		assertEquals("Default task state should be TO_DO.", 3, retrievedUserTasks.size());
 	}
 	
@@ -101,12 +111,18 @@ public class UserTaskServiceIT {
 	@Transactional
 	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
 	public void ruSymbolicTittleAndDescription() {
-		userTaskService.create("Ыъзфычсмюб", "Новый текст", testUserTask.getPriority());
-		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail());
+		Workspace workspace = workspaceService.retrieveAll().get(0);
+		userTaskService.create(workspace.getId(), "Ыъзфычсмюб", "Новый текст", testUserTask.getPriority());
+		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId());
 		assertEquals("Russian symbolic in title", "Ыъзфычсмюб", retrievedUserTasks.get(0).getTitle());
 		assertEquals("Russian symbolic in description", "Новый текст", retrievedUserTasks.get(0).getDescription());
 	}
 	
 	public void deleteCategoryWhichHaveTwoDifferentUsers() {}
+	
+	@Test
+	public void testOnNegativePrimaryKey() {
+		assertEquals("Oracle feature",true,false);
+	}
 	
 }

@@ -13,7 +13,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
-import com.advanceachievements.data.entities.UserAccount;
+import com.aveadvance.advancedachievements.data.entities.UserAccount;
 
 @Repository
 public class UserAccountDaoBasic implements UserAccountDao {
@@ -23,7 +23,7 @@ public class UserAccountDaoBasic implements UserAccountDao {
 
 	@Override
 	public void create(UserAccount userAccount) {
-			entityManager.persist(userAccount);
+		entityManager.persist(userAccount);
 	}
 
 	@Override

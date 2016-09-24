@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.advanceachievements.data.dto.UserAccountDto;
-import com.advanceachievements.data.entities.UserAccount;
-import com.advanceachievements.data.services.UserAccountService;
+import com.aveadvance.advancedachievements.data.entities.UserAccount;
+import com.aveadvance.advancedachievements.data.services.UserAccountService;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations ={"classpath:com/advanceachievements/configurations/dispatcher-servlet.xml"
@@ -54,9 +54,9 @@ public class UserAccountControllerIT {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newaccount")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email",correctAccountDto.getEmail()).param("password", correctAccountDto.getPassword()))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userAccountDto"));
-		
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userAccountDto"));
+
 		// Retrieve saved account from database
 		UserAccount retrievedAccount = userAccountService.retrieve(correctAccountDto.getEmail()).get();
 		assertEquals("Account should be saved in the database"

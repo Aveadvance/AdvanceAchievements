@@ -65,6 +65,7 @@
 						</div>
 					</c:if>
 					
+					<input type="hidden" name="userTaskCategoryId" value="${ userTaskCategoryId }" />
 					<input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }" />
 					
 		  			<button type="submit" class="btn btn-primary">Create task</button>

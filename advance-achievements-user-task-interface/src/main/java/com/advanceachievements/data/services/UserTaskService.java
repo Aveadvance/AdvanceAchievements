@@ -10,10 +10,14 @@ public interface UserTaskService {
 
 	Optional<UserTask> retrieve(long id);
 
-	boolean create(String title, String description, Priority priority, long userTaskCategoryId);
+	List<UserTask> retrieve(String email, long workspaceId);
 
-	List<UserTask> retrieve(String email);
+	boolean create(long workspaceId, String title, String description, Priority priority);
 
-	boolean create(String title, String description, Priority priority);
+	boolean create(long workspaceId, String title, String description, Priority priority, long userTaskCategoryId);
+	
+	void delete(long workspaceId, long id);
+
+	void update(long workspaceId, long id, String title, String description, Priority priority);
 
 }

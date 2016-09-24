@@ -14,18 +14,22 @@
 		<security:intercept-url pattern="/" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/personal-tasks-page" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/create-task-page" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/create-task-page/*" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/newtask" access="isAuthenticated()"/>
-		<security:intercept-url pattern="/newtaskcategory" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/deleteusertask" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/updateusertask" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/create-task-category-page" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/newtaskcategory" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/static/**" access="permitAll"/>
 		<security:intercept-url pattern="/login" access="permitAll"/>
 		<security:intercept-url pattern="/logout" access="permitAll"/>
 		<security:intercept-url pattern="/create-account" access="permitAll"/>
 		<security:intercept-url pattern="/newaccount" access="permitAll"/>
+		<security:intercept-url pattern="/createinitialworkspace" access="permitAll"/>
 		<security:intercept-url pattern="/access-denied-page" access="permitAll"/>
 		<security:intercept-url pattern="/persistence-exception-page" access="permitAll"/>
 		<security:intercept-url pattern="/**" access="denyAll"/>
-		<security:form-login login-page="/login" authentication-failure-url="/login?exception"/>
+		<security:form-login login-page="/login" authentication-success-forward-url="/" authentication-failure-url="/login?exception"/>
 		<security:logout logout-success-url="/"/>
 	</security:http>
 

@@ -54,13 +54,24 @@
 
     <!-- Begin page content -->
     <div class="container">
-    	<a href="${ pageContext.request.contextPath }/create-task-page" class="btn btn-success">Create new task</a>
+    	<a href="${ pageContext.request.contextPath }/create-task-category-page" class="btn btn-success">Create new category</a>
+		<p></p>
 		<div class="list-group">
-			<c:forEach items="${ personalTasks }" var="task">
-				<a href="#" class="list-group-item">
-					<h4 class="list-group-item-heading">${ task.title }</h4>
-					<p class="list-group-item-text">${ task.description }</p>
-				</a>
+			<c:forEach items="${ personalTasks }" var="entry">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span class="panel-title">${ entry.key.present?entry.key.get().name:"" }</span>
+					</div>
+					<div class="panel-body">
+						<c:forEach items="${ entry.value }" var="task">
+							<a href="#" class="list-group-item">
+								<h4 class="list-group-item-heading">${ task.title }</h4>
+								<p class="list-group-item-text">${ task.description }</p>
+							</a>
+						</c:forEach>
+						<a style="margin-top:10px;" href="${ pageContext.request.contextPath }/create-task-page/${ entry.key.present?entry.key.get().id:"" }" class="btn btn-success">Create new task</a>
+					</div>
+				</div>
 			</c:forEach>
 		</div>
     </div>

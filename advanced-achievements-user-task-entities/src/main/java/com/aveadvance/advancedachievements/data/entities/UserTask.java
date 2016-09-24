@@ -1,6 +1,7 @@
 package com.aveadvance.advancedachievements.data.entities;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,13 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
-
-import com.advanceachievements.data.entities.UserAccount;
 
 @Entity
 @Table(name="user_tasks")
@@ -47,6 +47,15 @@ public class UserTask {
 	private UserAccount owner;
 	
 	@NotNull
+	@OneToOne
+	@JoinColumn(name="workspace_id", referencedColumnName="id")
+	private Workspace workspace;
+	
+	@OneToOne
+	@JoinColumn(name="user_task_category_id", referencedColumnName="id")
+	private UserTaskCategory category;
+	
+	@NotNull
 	@Column(name="state")
 	@Enumerated(EnumType.STRING)
 	private UserTaskState state;
@@ -57,12 +66,25 @@ public class UserTask {
 	
 	public UserTask() {}
 
-	public UserTask(String title, String description, Priority priority, UserAccount owner
+	public UserTask(Workspace workspace, String title, String description, Priority priority, UserAccount owner
 			, UserTaskState state, LocalDateTime creationDate) {
+		this(0, workspace, title, description, priority, owner, null, state, creationDate);
+	}
+
+	public UserTask(Workspace workspace, String title, String description, Priority priority, UserAccount owner
+			, UserTaskCategory category, UserTaskState state, LocalDateTime creationDate) {
+		this(0, workspace, title, description, priority, owner, category, state, creationDate);
+	}
+
+	public UserTask(long id, Workspace workspace, String title, String description, Priority priority, UserAccount owner
+			, UserTaskCategory category, UserTaskState state, LocalDateTime creationDate) {
+		this.id = id;
+		this.workspace = workspace;
 		this.title = title;
 		this.description = description;
 		this.priority = priority;
 		this.owner = owner;
+		this.category = category;
 		this.state = state;
 		this.creationDate = creationDate;
 	}
@@ -85,6 +107,14 @@ public class UserTask {
 
 	public UserAccount getOwner() {
 		return owner;
+	}
+	
+	public Workspace getWorkspace() {
+		return workspace;
+	}
+
+	public Optional<UserTaskCategory> getCategory() {
+		return Optional.ofNullable(category);
 	}
 
 	public LocalDateTime getCreationDate() {
