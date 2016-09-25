@@ -3,7 +3,6 @@ package com.aveadvance.advancedachievements.data.services;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -20,10 +19,6 @@ import com.aveadvance.advancedachievements.data.entities.UserTask;
 import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.entities.UserTaskState;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
-import com.aveadvance.advancedachievements.data.services.UserAccountService;
-import com.aveadvance.advancedachievements.data.services.UserTaskCategoryService;
-import com.aveadvance.advancedachievements.data.services.WorkspaceService;
-import com.aveadvance.advancedachievements.exceptions.CategoryNotEmptyException;
 
 @Service
 public class UserTaskServiceBasic implements UserTaskService {
@@ -112,15 +107,15 @@ public class UserTaskServiceBasic implements UserTaskService {
 	@Secured({"ROLE_USER"})
 	public void delete(long workspaceId, long id) {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (!userTaskService
-				.retrieve(auth.getName(), workspaceId)
-				.parallelStream()
-				.filter(task -> task.getCategory().isPresent()?task.getCategory().get().getId()==id:false)
-				.collect(Collectors.toList())
-				.isEmpty()) {
-			throw new CategoryNotEmptyException();
-		}
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		if (!userTaskService
+//				.retrieve(auth.getName(), workspaceId)
+//				.parallelStream()
+//				.filter(task -> task.getCategory().isPresent()?task.getCategory().get().getId()==id:false)
+//				.collect(Collectors.toList())
+//				.isEmpty()) {
+//			throw new CategoryNotEmptyException();
+//		}
 		
 		userTaskDao.delete(id);
 	}

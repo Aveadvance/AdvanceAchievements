@@ -65,7 +65,9 @@
 						</div>
 					</c:if>
 					
-					<input type="hidden" name="userTaskCategoryId" value="${ userTaskCategoryId }" />
+					<c:if test='${ userTaskCategoryId != null }'>
+						<input type="hidden" name="userTaskCategoryId" value="${ userTaskCategoryId }" />
+					</c:if>
 					<input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }" />
 					
 		  			<button type="submit" class="btn btn-primary">Create task</button>

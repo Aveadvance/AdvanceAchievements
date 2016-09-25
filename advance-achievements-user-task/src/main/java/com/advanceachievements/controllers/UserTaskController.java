@@ -24,6 +24,7 @@ import com.advanceachievements.data.services.UserTaskService;
 import com.aveadvance.advancedachievements.data.entities.UserTask;
 import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.services.UserTaskCategoryService;
+import com.aveadvance.advancedachievements.exceptions.ExceptionsDto;
 
 @Controller
 public class UserTaskController {
@@ -49,6 +50,12 @@ public class UserTaskController {
 				.collect(Collectors.toMap(category -> Optional.ofNullable(category), category -> new ArrayList<UserTask>()));
 		personalTasks.putAll(allCategories);
 		model.addAttribute("personalTasks", personalTasks);
+		
+		Optional.ofNullable((ExceptionsDto)request.getSession().getAttribute("exceptionsDto")).ifPresent(exceptionsDto -> {
+			model.addAttribute("exceptionsDto", exceptionsDto);
+			request.getSession().removeAttribute("exceptionsDto");
+		});
+		
 		return "advance-achievements-user-task/personal-tasks-page";
 	}
 	
@@ -66,6 +73,9 @@ public class UserTaskController {
 	@RequestMapping("/newtask")
 	public String newTask(HttpServletRequest request, @Valid UserTaskDto userTaskDto, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
+//			for (ObjectError er : bindingResult.getAllErrors()) {
+//				System.out.println(er.getDefaultMessage());
+//			}
 			return createTaskPage();
 		}
 		
@@ -81,10 +91,11 @@ public class UserTaskController {
 	}
 
 	@RequestMapping("/deleteusertask")
-	public String delete(long workspaceId, long id) {
+	public String delete(long id, HttpServletRequest request) {
+		long workspaceId = (Long)request.getSession().getAttribute("workspaceId");
 		
 		if (workspaceId < 1 || id < 1) {
-			return "redirect:/" + workspaceId + "/personal-tasks-page";
+			return "redirect:/personal-tasks-page";
 		}
 		
 		userTaskService.delete(workspaceId, id);

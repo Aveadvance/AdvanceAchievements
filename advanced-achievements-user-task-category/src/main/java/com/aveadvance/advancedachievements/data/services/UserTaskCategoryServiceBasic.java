@@ -5,18 +5,25 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.advanceachievements.data.services.UserTaskService;
 import com.aveadvance.advancedachievements.data.dao.UserTaskCategoryDao;
 import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.exceptions.CategoryNotEmptyException;
 
 @Service
 public class UserTaskCategoryServiceBasic implements UserTaskCategoryService {
 	
 	@Autowired
 	private UserTaskCategoryDao userTaskCategoryDao;
+	
+	@Autowired
+	private UserTaskService userTaskService;
 	
 	@Autowired
 	private WorkspaceService workspaceService;
@@ -61,10 +68,17 @@ public class UserTaskCategoryServiceBasic implements UserTaskCategoryService {
 
 	@Override
 	@Transactional
+	@Secured({"ROLE_USER"})
 	public void delete(long workspaceId, long id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Optional<UserTaskCategory> userTaskCategory = userTaskCategoryDao.retrieve(id);
 		userTaskCategory.ifPresent(category -> {
 			if (workspaceId == category.getWorkspace().getId()) {
+				if (userTaskService.retrieve(auth.getName(), workspaceId)
+				.parallelStream()
+				.filter(task -> task.getCategory().equals(Optional.ofNullable(category))).count() > 0) {
+					throw new CategoryNotEmptyException("Category is not empty! Delete the tasks first please.");
+				}
 				userTaskCategoryDao.delete(id);
 			}
 		});

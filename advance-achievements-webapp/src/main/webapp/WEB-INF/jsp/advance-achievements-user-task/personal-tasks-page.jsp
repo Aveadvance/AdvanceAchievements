@@ -12,6 +12,10 @@
     <meta name="author" content="">
 
     <title>Advance Achievements</title>
+    
+    <script>
+    	var rootPath = "${ pageContext.request.contextPath }";
+    </script>
 
     <!-- Bootstrap core CSS -->
     <link href="${ pageContext.request.contextPath }/static/css/bootstrap.css" rel="stylesheet">
@@ -21,7 +25,6 @@
   </head>
 
   <body>
-
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
@@ -54,6 +57,19 @@
 
     <!-- Begin page content -->
     <div class="container">
+		<div id="exceptions">
+			${ exceptions }
+			<c:forEach items="${ exceptionsDto.exceptions }" var="entry">
+				<c:if test="${ entry.key eq 'global' }">
+					<div class="alert alert-danger" role="alert">
+						<c:forEach items="${ entry.value }" var="exception">
+							<div>${ exception }</div>
+						</c:forEach>
+					</div>
+				</c:if>
+			</c:forEach>
+		</div>
+    	<a href="${ pageContext.request.contextPath }/create-task-page" class="btn btn-success">Create new task</a>
     	<a href="${ pageContext.request.contextPath }/create-task-category-page" class="btn btn-success">Create new category</a>
 		<p></p>
 		<div class="list-group">
@@ -63,13 +79,38 @@
 						<span class="panel-title">${ entry.key.present?entry.key.get().name:"" }</span>
 					</div>
 					<div class="panel-body">
+						<ul class="list-group">
 						<c:forEach items="${ entry.value }" var="task">
-							<a href="#" class="list-group-item">
-								<h4 class="list-group-item-heading">${ task.title }</h4>
-								<p class="list-group-item-text">${ task.description }</p>
-							</a>
+							<li class="list-group-item">
+								<h4 class="list-group-item-heading">
+								${ task.title }
+								
+								<span class="btn-group" style="float:right;">
+									<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+										Task menu
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+									<li onclick="deleteTask(${ task.id })"><a href="#">Delete task</a></li>
+									<!-- <li><a href="#">Another action</a></li>
+									<li><a href="#">Something else here</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a href="#">Separated link</a></li> -->
+									</ul>
+								</span>
+								</h4>
+								<div style="clear:both;"></div>
+								
+								
+								
+								<p class="list-group-item-text" style="white-space:pre;">${ task.description }</p>
+							</li>
 						</c:forEach>
-						<a style="margin-top:10px;" href="${ pageContext.request.contextPath }/create-task-page/${ entry.key.present?entry.key.get().id:"" }" class="btn btn-success">Create new task</a>
+						</ul>
+						<c:if test="${ entry.key.present }">
+							<a href="${ pageContext.request.contextPath }/create-task-page/${ entry.key.present?entry.key.get().id:"" }" class="btn btn-success">Create new task</a>
+							<button class="btn btn-warning" onclick="deleteTaskCategory(${ entry.key.present?entry.key.get().id:'' })">Delete category</button>
+						</c:if>
 					</div>
 				</div>
 			</c:forEach>
@@ -85,6 +126,9 @@
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
+    <script src="${ pageContext.request.contextPath }/static/js/jquery-3.1.1.min.js"></script>
+    <script src="${ pageContext.request.contextPath }/static/js/bootstrap.min.js"></script>
+    <script src="${ pageContext.request.contextPath }/static/js/common.js"></script>
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>

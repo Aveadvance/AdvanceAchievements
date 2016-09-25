@@ -8,6 +8,16 @@
 	DROP TABLE user_account_workspace CASCADE CONSTRAINTS;
 	DROP TABLE user_tasks CASCADE CONSTRAINTS;
 	DROP TABLE user_task_categories CASCADE CONSTRAINTS;
+
+	DELETE FROM user_accounts;
+	DELETE FROM user_account_authorities;
+	DELETE FROM user_account_workspace;
+	DELETE FROM user_tasks;
+	DELETE FROM user_task_categories;
+	DELETE FROM workspaces;
+
+	SELECT acc.id, email, authority FROM user_accounts acc 
+		INNER JOIN user_account_authorities auth ON acc.id=auth.id;
 ***
 
 CREATE SEQUENCE user_accounts_seq START WITH 1 INCREMENT BY 1;

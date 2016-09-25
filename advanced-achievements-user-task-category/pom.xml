@@ -16,8 +16,16 @@
   <dependencies>
     <dependency>
 		<groupId>${project.groupId}</groupId>
+		<artifactId>advance-achievements-user-task-interface</artifactId>
+    </dependency>
+    <dependency>
+		<groupId>${project.groupId}</groupId>
 		<artifactId>advanced-achievements-user-task-category-interface</artifactId>
     </dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+  		<artifactId>advanced-achievements-exceptions</artifactId>
+  	</dependency>
   	<dependency>
   		<groupId>org.springframework</groupId>
   		<artifactId>spring-webmvc</artifactId>

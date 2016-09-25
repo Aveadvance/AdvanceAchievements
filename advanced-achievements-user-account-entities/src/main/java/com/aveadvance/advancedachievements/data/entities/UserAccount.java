@@ -29,7 +29,7 @@ public class UserAccount {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_accounts_seq")
-	@SequenceGenerator(name="user_accounts_seq", sequenceName="user_accounts_seq", allocationSize=1)
+	@SequenceGenerator(name="user_accounts_seq", sequenceName="user_accounts_seq", initialValue=1, allocationSize=1)
 	private long id;
 
 	@NotNull

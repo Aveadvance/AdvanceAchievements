@@ -33,6 +33,7 @@
     <module>advanced-achievements-workspace-entities</module>
     <module>advanced-achievements-user-account-entities</module>
     <module>advanced-achievements-configuration-integration</module>
+    <module>advanced-achievements-exceptions</module>
   </modules>
   
   <properties>
@@ -149,6 +150,11 @@
 	      <artifactId>advanced-achievements-user-task-category-entities</artifactId>
 	      <version>${project.version}</version>
 	    </dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-exceptions</artifactId>
+     		<version>${project.version}</version>
+	  	</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>

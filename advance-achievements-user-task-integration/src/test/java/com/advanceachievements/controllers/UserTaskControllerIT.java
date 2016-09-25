@@ -118,6 +118,27 @@ public class UserTaskControllerIT {
 	}
 	
 	@Test
+	public void createTaskWithoutDescription1() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("title", testUserTask.getTitle())
+				.param("description", "")
+				.param("priority", testUserTask.getPriority().name()))
+		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskDto"));
+	}
+	
+	@Test
+	public void createTaskWithoutDescription2() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("title", testUserTask.getTitle())
+				.param("priority", testUserTask.getPriority().name()))
+		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskDto"));
+	}
+	
+	@Test
 	public void nonExistingPriority() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)

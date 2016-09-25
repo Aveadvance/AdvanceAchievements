@@ -91,9 +91,9 @@ public class UserTaskCategoryControllerIT {
 		// TODO: Logger: System.out.println(personalWorkspace.getId()+" "+personalWorkspace.getType());
 		String categoryName = "New category";
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtaskcategory")
+				.sessionAttr("workspaceId", personalWorkspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("name", categoryName)
-				.param("workspaceId", Long.toString(personalWorkspace.getId())))
+				.param("name", categoryName))
 		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskCategoryDto"));
 		
@@ -116,10 +116,10 @@ public class UserTaskCategoryControllerIT {
 		UserTaskCategory userTaskCategory = userTaskCategoryService.retrieveAll(personalWorkspace.getId()).get(0);
 		assertEquals("Category is saved.", categoryName, userTaskCategory.getName());
 		
-		mockMvc.perform(MockMvcRequestBuilders.post("/deletecategory")
+		mockMvc.perform(MockMvcRequestBuilders.post("/deletetaskcategory")
+				.sessionAttr("workspaceId", personalWorkspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("id", Long.toString(userTaskCategory.getId()))
-				.param("workspaceId", Long.toString(personalWorkspace.getId())))
+				.param("id", Long.toString(userTaskCategory.getId())))
 		.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 		
 		List<UserTaskCategory> userTaskCategories = userTaskCategoryService.retrieveAll(personalWorkspace.getId());
@@ -145,10 +145,10 @@ public class UserTaskCategoryControllerIT {
 		assertEquals("Category is saved.", categoryName, userTaskCategory.getName());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post("/updatecategory")
+				.sessionAttr("workspaceId", personalWorkspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("id", Long.toString(userTaskCategory.getId()))
-				.param("name", newCategoryName)
-				.param("workspaceId", Long.toString(personalWorkspace.getId())))
+				.param("name", newCategoryName))
 		.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 		.andExpect(MockMvcResultMatchers.model().attributeHasNoErrors("userTaskCategoryDto"));
 		
@@ -158,29 +158,29 @@ public class UserTaskCategoryControllerIT {
 		assertEquals("Category updated.", userTaskCategory.getWorkspace(), retrievedUserTaskCategory.getWorkspace());
 	}
 	
-	@Test
-	@Transactional
-	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
-	public void tryToRemoveCategoryWithoutWorkspaceParameters() throws Exception {
-		
-		/* Retrieve personal workspace. */
-		Workspace personalWorkspace = workspaceService.retrieveAll().get(0);
-		
-		/* Create new category. */
-		String categoryName = "New category";
-		userTaskCategoryService.create(personalWorkspace.getId(), categoryName);
-		UserTaskCategory userTaskCategory = userTaskCategoryService.retrieveAll(personalWorkspace.getId()).get(0);
-		assertEquals("Category is saved.", categoryName, userTaskCategory.getName());
-		
-		mockMvc.perform(MockMvcRequestBuilders.post("/deletecategory")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("id", Long.toString(userTaskCategory.getId()))
-				.param("workspaceId", "0"))
-		.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
-		
-		List<UserTaskCategory> userTaskCategories = userTaskCategoryService.retrieveAll(personalWorkspace.getId());
-		assertEquals("Category removed.", false, userTaskCategories.isEmpty());
-	}
+//	@Test
+//	@Transactional
+//	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
+//	public void tryToRemoveCategoryWithoutWorkspaceParameters() throws Exception {
+//		
+//		/* Retrieve personal workspace. */
+//		Workspace personalWorkspace = workspaceService.retrieveAll().get(0);
+//		
+//		/* Create new category. */
+//		String categoryName = "New category";
+//		userTaskCategoryService.create(personalWorkspace.getId(), categoryName);
+//		UserTaskCategory userTaskCategory = userTaskCategoryService.retrieveAll(personalWorkspace.getId()).get(0);
+//		assertEquals("Category is saved.", categoryName, userTaskCategory.getName());
+//		
+//		mockMvc.perform(MockMvcRequestBuilders.post("/deletetaskcategory")
+//				.sessionAttr("workspaceId", personalWorkspace.getId())
+//				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+//				.param("id", Long.toString(userTaskCategory.getId())))
+//		.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+//		
+//		List<UserTaskCategory> userTaskCategories = userTaskCategoryService.retrieveAll(personalWorkspace.getId());
+//		assertEquals("Category removed.", false, userTaskCategories.isEmpty());
+//	}
 	
 	@Test
 	@Transactional
@@ -254,6 +254,38 @@ public class UserTaskCategoryControllerIT {
 		logger.debug("***** Retrieve category with tasks again.");
 		assertEquals("Task is deleted from category", true
 				, userTasks.isEmpty());
+	}
+	
+	@Test
+	@Transactional
+	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
+	public void tryToDeleteCategoryThatHasTasks() throws Exception {
+		
+		/* Get default private workspace */
+		Workspace personalWorkspace = workspaceService.retrieveAll().get(0);
+
+		/* Create new category */
+		String categoryName = "Category";
+		userTaskCategoryService.create(personalWorkspace.getId(), categoryName);
+		
+		/* Check if category was created. */
+		List<UserTaskCategory> userTaskCategories = userTaskCategoryService.retrieveAll(personalWorkspace.getId());
+		UserTaskCategory userTaskCategory = userTaskCategories.get(0);
+		assertEquals("Category created.", categoryName, userTaskCategory.getName());
+		
+		/* Create new task in this category. */
+		userTaskService.create(personalWorkspace.getId(), "New task", "Description", Priority.MIDDLE, userTaskCategory.getId());
+		
+		/* Try to delete the category. */
+		mockMvc.perform(MockMvcRequestBuilders.post("/deletetaskcategory")
+				.sessionAttr("workspaceId", personalWorkspace.getId())
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("id", Long.toString(userTaskCategory.getId())))
+		.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+		
+		UserTaskCategory retrievedUserTaskCategory = userTaskCategories.get(0);
+		assertEquals("Category should not be deleted.", userTaskCategory
+				, retrievedUserTaskCategory);
 	}
 
 }

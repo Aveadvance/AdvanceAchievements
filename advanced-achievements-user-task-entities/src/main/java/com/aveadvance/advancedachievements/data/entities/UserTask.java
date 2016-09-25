@@ -25,7 +25,7 @@ public class UserTask {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_task_seq")
-	@SequenceGenerator(name="user_task_seq", sequenceName="user_task_seq")
+	@SequenceGenerator(name="user_task_seq", sequenceName="user_task_seq", initialValue=1, allocationSize=1)
 	private long id;
 	
 	@NotNull
