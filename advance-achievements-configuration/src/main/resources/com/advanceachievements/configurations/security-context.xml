@@ -15,6 +15,7 @@
 		<security:intercept-url pattern="/personal-tasks-page" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/create-task-page" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/create-task-page/*" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/update-task-page" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/newtask" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/deleteusertask" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/updateusertask" access="isAuthenticated()"/>

@@ -8,7 +8,7 @@ import com.aveadvance.advancedachievements.data.entities.UserTask;
 
 public interface UserTaskService {
 
-	Optional<UserTask> retrieve(long id);
+	Optional<UserTask> retrieve(long workspaceId, long id);
 
 	List<UserTask> retrieve(String email, long workspaceId);
 

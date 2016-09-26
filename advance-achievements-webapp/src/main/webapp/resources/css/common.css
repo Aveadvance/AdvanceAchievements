@@ -73,3 +73,75 @@ body > .container {
 code {
   font-size: 80%;
 }
+
+/* user-tasks-page */
+div.task-priority-pointer {
+	display:inline-block; 
+	width:10px; 
+	height:10px;
+}
+
+.VERY_HIGH {
+	background: #FF4136;
+}
+
+.HIGH {
+	background: #FF851B;
+}
+
+.MIDDLE {
+	background: #FFDC00;
+}
+
+.LOW {
+	background: #2ECC40;
+}
+
+.VERY_LOW {
+	background: #01FF70;
+}
+
+#priority option.priority-very-high:before {
+    content: " ";
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+	background: #FF4136;
+	margin-right:5px;
+}
+
+#priority option.priority-high:before {
+    content: " ";
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+	background: #FF851B;
+	margin-right:5px;
+}
+
+#priority option.priority-middle:before {
+    content: " ";
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+	background: #FFDC00;
+	margin-right:5px;
+}
+
+#priority option.priority-low:before {
+    content: " ";
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+	background: #2ECC40;
+	margin-right:5px;
+}
+
+#priority option.priority-very-low:before {
+    content: " ";
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+	background: #01FF70;
+	margin-right:5px;
+}

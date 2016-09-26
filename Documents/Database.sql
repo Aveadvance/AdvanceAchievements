@@ -18,6 +18,7 @@
 
 	SELECT acc.id, email, authority FROM user_accounts acc 
 		INNER JOIN user_account_authorities auth ON acc.id=auth.id;
+	SELECT id, user_task_category_id FROM user_tasks;
 ***
 
 CREATE SEQUENCE user_accounts_seq START WITH 1 INCREMENT BY 1;

@@ -125,4 +125,8 @@ public class UserTaskServiceIT {
 		assertEquals("Oracle feature",true,false);
 	}
 	
+	public void testToUpdateUserTaskWithingFriendsWorkspace() {
+		/* Task with not valid workspace */
+	}
+	
 }

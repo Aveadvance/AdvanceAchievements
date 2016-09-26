@@ -69,6 +69,20 @@ public class UserTaskController {
 		model.addAttribute("userTaskCategoryId", userTaskCategoryId);
 		return "advance-achievements-user-task/create-task-page";
 	}
+	
+	@RequestMapping("/update-task-page")
+	public String updateTaskPage(long id, HttpServletRequest request, Model model) {
+		long workspaceId = (Long) request.getSession().getAttribute("workspaceId");
+		Optional<UserTask> userTaskToUpdate = userTaskService.retrieve(workspaceId, id);
+		if(userTaskToUpdate.isPresent()) {
+			model.addAttribute("userTaskToUpdate", userTaskToUpdate.get());
+			return createTaskPage();
+		}
+		ExceptionsDto exceptions = new ExceptionsDto();
+		exceptions.addException("global", "Data do not match. Try again please.");
+		request.getSession().setAttribute("exceptionsDto", exceptions);
+		return "redirect:/personal-tasks-page";
+	}
 
 	@RequestMapping("/newtask")
 	public String newTask(HttpServletRequest request, @Valid UserTaskDto userTaskDto, BindingResult bindingResult) {
@@ -81,12 +95,18 @@ public class UserTaskController {
 		
 		long workspaceId = (Long) request.getSession().getAttribute("workspaceId");
 		
-		if (userTaskDto.getUserTaskCategoryId() == 0)
-			userTaskService.create(workspaceId, userTaskDto.getTitle(), userTaskDto.getDescription()
-					, userTaskDto.getPriority());
-		else
-			userTaskService.create(workspaceId, userTaskDto.getTitle(), userTaskDto.getDescription()
-					, userTaskDto.getPriority(), userTaskDto.getUserTaskCategoryId());
+		if (userTaskDto.getId() == 0) {
+			if (userTaskDto.getUserTaskCategoryId() == 0)
+				userTaskService.create(workspaceId, userTaskDto.getTitle(), userTaskDto.getDescription()
+						, userTaskDto.getPriority());
+			else
+				userTaskService.create(workspaceId, userTaskDto.getTitle(), userTaskDto.getDescription()
+						, userTaskDto.getPriority(), userTaskDto.getUserTaskCategoryId());
+		} else {
+			userTaskService.update(workspaceId, userTaskDto.getId(), userTaskDto.getTitle()
+					, userTaskDto.getDescription(), userTaskDto.getPriority());
+		}
+		
 		return "redirect:/personal-tasks-page";
 	}
 

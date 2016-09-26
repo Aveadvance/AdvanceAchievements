@@ -34,14 +34,15 @@ public class UserTaskServiceBasic implements UserTaskService {
 	
 	@Autowired
 	private UserTaskCategoryService userTaskCategoryService;
-	
-	@Autowired
-	private UserTaskService userTaskService;
 
 	@Override
 	@Transactional(readOnly=true)
-	public Optional<UserTask> retrieve(long id) {
-		return userTaskDao.retrieve(id);
+	public Optional<UserTask> retrieve(long workspaceId, long id) {
+		Optional<UserTask> userTask = userTaskDao.retrieve(id);
+		if (userTask.isPresent() && userTask.get().getWorkspace().getId() == workspaceId) {
+			return userTask;
+		}
+		return Optional.empty();
 	}
 
 	@Override
@@ -121,9 +122,10 @@ public class UserTaskServiceBasic implements UserTaskService {
 	}
 
 	@Override
+	@Transactional
 	public void update(long workspaceId, long id, String title, String description, Priority priority) {
 		workspaceService.retrieve(workspaceId).ifPresent(workspace -> {
-			userTaskService.retrieve(id).ifPresent(task -> {
+			retrieve(workspace.getId(), id).ifPresent(task -> {
 				if (task.getWorkspace().equals(workspace)) {
 					userTaskDao.update(new UserTask(id, workspace, title, description
 							, priority, task.getOwner(), task.getCategory().orElse(null), task.getState(), task.getCreationDate()));

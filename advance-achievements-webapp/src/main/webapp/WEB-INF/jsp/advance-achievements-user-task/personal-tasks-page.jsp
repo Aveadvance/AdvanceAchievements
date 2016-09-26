@@ -38,16 +38,16 @@
           <a class="navbar-brand" href="#">Advance Achievements</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
+          <!-- <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
-          </ul>
+          </ul> -->
 			<ul class="nav navbar-nav navbar-right">
 				<li>
 					<form action="${ pageContext.request.contextPath }/logout" method="post">
-					<input type="submit" class="btn btn-link" value="Logout" />
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						<input type="submit" class="btn btn-link" value="Logout" />
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					</form>
 				</li>
 			</ul>
@@ -83,6 +83,7 @@
 						<c:forEach items="${ entry.value }" var="task">
 							<li class="list-group-item">
 								<h4 class="list-group-item-heading">
+								<div class="task-priority-pointer ${ task.priority }"></div>
 								${ task.title }
 								
 								<span class="btn-group" style="float:right;">
@@ -92,6 +93,7 @@
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 									<li onclick="deleteTask(${ task.id })"><a href="#">Delete task</a></li>
+									<li><a href="${ pageContext.request.contextPath }/update-task-page?id=${ task.id }">Update task</a></li>
 									<!-- <li><a href="#">Another action</a></li>
 									<li><a href="#">Something else here</a></li>
 									<li role="separator" class="divider"></li>

@@ -19,13 +19,13 @@
 	<div class="container">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				Create new task category
+				Task category
 			</div>
 			<div class="panel-body">
 				<form action="${pageContext.request.contextPath}/newtaskcategory" method="POST">
 					<div class="form-group">
 					  <label for="task-category-name">Task category name</label>
-					  <input id="task-category-name" name="name" type="text" class="form-control" placeholder="Task category name">
+					  <input id="task-category-name" name="name" type="text" class="form-control" placeholder="Task category name" autofocus>
 					</div>
 					<c:if test='${ exceptions.getFieldErrors("name").size() > 0 }'>
 						<div class="alert alert-danger">
@@ -37,7 +37,7 @@
 					
 					<input type="hidden" name="${ _csrf.parameterName }" value="${ _csrf.token }" />
 					
-		  			<button type="submit" class="btn btn-primary">Create task</button>
+		  			<button type="submit" class="btn btn-primary">Save</button>
 				</form>
 			</div>
 		</div>
