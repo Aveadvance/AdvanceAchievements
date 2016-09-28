@@ -23,11 +23,11 @@ public class UserAccountDaoBasic implements UserAccountDao {
 
 	@Override
 	public void create(UserAccount userAccount) {
-			entityManager.persist(userAccount);
+		entityManager.persist(userAccount);
 	}
 
 	@Override
-	public UserAccount retrieve(Long id) {
+	public Optional<UserAccount> retrieve(Long id) {
 		throw new UnsupportedOperationException();
 	}
 

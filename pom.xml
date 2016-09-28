@@ -10,13 +10,30 @@
   
   <modules>
     <module>advance-achievements-configuration</module>
-    <module>advance-achievements-webapp</module>
+    <module>advanced-achievements-configuration-integration</module>
     <module>advance-achievements-interfaces</module>
+    <module>advance-achievements-webapp</module>
     <module>advance-achievements-user-account</module>
     <module>advance-achievements-user-account-interface</module>
+    <module>advanced-achievements-user-account-entities</module>
     <module>advance-achievements-user-account-integration</module>
     <module>advance-achievements-user-account-repository</module>
-    <module>advanced-achievements-user-account-entities</module>
+    <module>advance-achievements-user-task</module>
+    <module>advance-achievements-user-task-interface</module>
+    <module>advanced-achievements-user-task-entities</module>
+    <module>advance-achievements-user-task-repository</module>
+    <module>advance-achievements-user-task-integration</module>
+    <module>advanced-achievements-user-task-category-interface</module>
+    <module>advanced-achievements-user-task-category-entities</module>
+    <module>advanced-achievements-user-task-category</module>
+    <module>advanced-achievements-user-task-category-repository</module>
+    <module>advanced-achievements-user-task-category-integration</module>
+    <module>advanced-achievements-workspace-interface</module>
+    <module>advanced-achievements-workspace-entities</module>
+    <module>advanced-achievements-workspace</module>
+    <module>advanced-achievements-workspace-repository</module>
+    <module>advanced-achievements-workspace-integration</module>
+    <module>advanced-achievements-exceptions</module>
   </modules>
   
   <properties>
@@ -117,6 +134,101 @@
   
   <dependencyManagement>
   	<dependencies>
+	    <dependency>
+	      <groupId>${project.groupId}</groupId>
+	      <artifactId>advance-achievements-configuration</artifactId>
+	      <version>${project.version}</version>
+	    </dependency>
+	    <dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>advance-achievements-interfaces</artifactId>
+			<version>${project.version}</version>
+	    </dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advance-achievements-user-account-interface</artifactId>
+	    	<version>${project.version}</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advance-achievements-user-account</artifactId>
+	    	<version>${project.version}</version>
+	  	</dependency>
+	    <dependency>
+	    	<groupId>${project.groupId}</groupId>
+	    	<artifactId>advance-achievements-user-account-repository</artifactId>
+	    	<version>${project.version}</version>
+	    </dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-user-account-entities</artifactId>
+	    	<version>${project.version}</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-workspace-interface</artifactId>
+	    	<version>${project.version}</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-workspace</artifactId>
+	    	<version>${project.version}</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-workspace-repository</artifactId>
+	    	<version>${project.version}</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-workspace-entities</artifactId>
+	    	<version>${project.version}</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advance-achievements-user-task-interface</artifactId>
+	      	<version>${project.version}</version>
+	  	</dependency>
+	    <dependency>
+	      <groupId>${project.groupId}</groupId>
+	      <artifactId>advance-achievements-user-task</artifactId>
+	      <version>${project.version}</version>
+	    </dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advance-achievements-user-task-repository</artifactId>
+	      	<version>${project.version}</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-user-task-entities</artifactId>
+	      	<version>${project.version}</version>
+	  	</dependency>
+	    <dependency>
+	      <groupId>${project.groupId}</groupId>
+	      <artifactId>advanced-achievements-user-task-category-interface</artifactId>
+	      <version>${project.version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>${project.groupId}</groupId>
+	      <artifactId>advanced-achievements-user-task-category</artifactId>
+	      <version>${project.version}</version>
+	    </dependency>
+	    <dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>advanced-achievements-user-task-category-repository</artifactId>
+	      	<version>${project.version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>${project.groupId}</groupId>
+	      <artifactId>advanced-achievements-user-task-category-entities</artifactId>
+	      <version>${project.version}</version>
+	    </dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-exceptions</artifactId>
+     		<version>${project.version}</version>
+	  	</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -136,6 +248,7 @@
 	  		<groupId>junit</groupId>
 	  		<artifactId>junit</artifactId>
 	  		<version>4.12</version>
+	  		<scope>test</scope>
 	  	</dependency>
 	 	<dependency>
 	 		<groupId>com.oracle</groupId>
@@ -186,6 +299,7 @@
 	 		<groupId>org.springframework</groupId>
 	 		<artifactId>spring-test</artifactId>
 	 		<version>${springframework.version}</version>
+	 		<scope>test</scope>
 	 	</dependency>
 	  	<dependency>
 	  		<groupId>org.springframework.security</groupId>
@@ -202,6 +316,12 @@
 	  		<artifactId>spring-security-config</artifactId>
 	  		<version>${springframework.security.version}</version>
 	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.springframework.security</groupId>
+	  		<artifactId>spring-security-test</artifactId>
+	  		<version>${springframework.security.version}</version>
+	  		<scope>test</scope>
+	  	</dependency>
 	 	<dependency>
 	 		<groupId>org.hibernate</groupId>
 	 		<artifactId>hibernate-core</artifactId>
@@ -217,11 +337,11 @@
 	  		<artifactId>hibernate-validator</artifactId>
 	  		<version>5.2.4.Final</version>
 	  	</dependency>
-	  	<!-- <dependency>
-	  		<groupId>javax.validation</groupId>
-	  		<artifactId>validation-api</artifactId>
-	  		<version>1.1.0.Final</version>
-	  	</dependency> -->
+	  	<dependency>
+	  		<groupId>log4j</groupId>
+	  		<artifactId>log4j</artifactId>
+	  		<version>1.2.17</version>
+	  	</dependency>
   	</dependencies>
   </dependencyManagement>
   

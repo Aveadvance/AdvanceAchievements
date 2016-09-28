@@ -17,7 +17,10 @@
   	<dependency>
   		<groupId>${project.groupId}</groupId>
   		<artifactId>advance-achievements-interfaces</artifactId>
-  		<version>${project.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+  		<artifactId>advanced-achievements-user-account-entities</artifactId>
   	</dependency>
   	<dependency>
   		<groupId>${project.groupId}</groupId>

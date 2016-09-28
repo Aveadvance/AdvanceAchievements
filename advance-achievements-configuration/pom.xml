@@ -17,46 +17,31 @@
   <dependencies>
   	<dependency>
   		<groupId>${project.groupId}</groupId>
-  		<artifactId>advance-achievements-user-account</artifactId>
-  		<version>${project.version}</version>
+  		<artifactId>advance-achievements-user-account-interface</artifactId>
   	</dependency>
   	<dependency>
   		<groupId>com.oracle</groupId>
   		<artifactId>ojdbc6</artifactId>
   	</dependency>
  	<dependency>
- 		<groupId>org.springframework</groupId>
- 		<artifactId>spring-context</artifactId>
- 	</dependency>
- 	<dependency>
- 		<groupId>org.springframework</groupId>
- 		<artifactId>spring-orm</artifactId>
+ 		<groupId>org.springframework.security</groupId>
+ 		<artifactId>spring-security-core</artifactId>
  	</dependency>
  	<dependency>
  		<groupId>org.springframework</groupId>
  		<artifactId>spring-tx</artifactId>
  	</dependency>
  	<dependency>
- 		<groupId>org.springframework.security</groupId>
- 		<artifactId>spring-security-core</artifactId>
- 	</dependency>
- 	<dependency>
- 		<groupId>junit</groupId>
- 		<artifactId>junit</artifactId>
- 		<scope>test</scope>
- 	</dependency>
- 	<dependency>
  		<groupId>org.springframework</groupId>
- 		<artifactId>spring-test</artifactId>
- 		<scope>test</scope>
- 	</dependency>
- 	<dependency>
- 		<groupId>org.hibernate</groupId>
- 		<artifactId>hibernate-c3p0</artifactId>
+ 		<artifactId>spring-orm</artifactId>
  	</dependency>
  	<dependency>
  		<groupId>org.hibernate</groupId>
  		<artifactId>hibernate-core</artifactId>
+ 	</dependency>
+ 	<dependency>
+ 		<groupId>org.hibernate</groupId>
+ 		<artifactId>hibernate-c3p0</artifactId>
  	</dependency>
   </dependencies>
 </project>

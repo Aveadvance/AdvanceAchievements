@@ -1,5 +1,6 @@
 package com.advanceachievements.controllers;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.SQLGrammarException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,7 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerControllerAdvice {
 	
 	@ExceptionHandler(value=SQLGrammarException.class)
-	public String dbExceptions(Exception ex) {
+	public String sqlGrammarException(Exception ex) {
+		ex.printStackTrace();
+		return "redirect:/persistence-exception-page";
+	}
+	
+	@ExceptionHandler(value=ConstraintViolationException.class)
+	public String constraintViolationException(Exception ex) {
 		ex.printStackTrace();
 		return "redirect:/persistence-exception-page";
 	}

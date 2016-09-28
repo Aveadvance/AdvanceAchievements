@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.advanceachievements</groupId>
+    <artifactId>advance-achievements-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>advanced-achievements-workspace-entities</artifactId>
+  <name>advanced-achievements-workspace-entities</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+  		<artifactId>advance-achievements-user-account-interface</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.hibernate.javax.persistence</groupId>
+  		<artifactId>hibernate-jpa-2.1-api</artifactId>
+  	</dependency>
+  </dependencies>
+</project>

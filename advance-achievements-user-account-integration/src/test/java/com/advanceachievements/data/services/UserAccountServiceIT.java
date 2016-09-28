@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aveadvance.advancedachievements.data.entities.Authority;
 import com.aveadvance.advancedachievements.data.entities.UserAccount;
+import com.aveadvance.advancedachievements.data.services.UserAccountService;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations = { "classpath:com/advanceachievements/configurations/data-test-context.xml",
@@ -57,8 +58,7 @@ public class UserAccountServiceIT {
 		Set<Authority> authorities = new HashSet<>();
 		authorities.add(Authority.ROLE_USER);
 		authorities.add(Authority.ROLE_ADMIN);
-		UserAccount userAccount = new UserAccount(userAccount1.getEmail(), userAccount1.getPassword(), authorities);
-		userAccountService.create(userAccount);
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword(), authorities);
 		Optional<UserAccount> retrievedUserAccount = userAccountService.retrieve(userAccount1.getEmail());
 		assertTrue("UserAccount has multiple roles", retrievedUserAccount.get().getAuthorities().contains(Authority.ROLE_USER));
 		assertTrue("UserAccount has multiple roles", retrievedUserAccount.get().getAuthorities().contains(Authority.ROLE_ADMIN));
@@ -72,8 +72,7 @@ public class UserAccountServiceIT {
 		Set<Authority> authorities = new HashSet<>();
 		authorities.add(Authority.ROLE_USER);
 		authorities.add(Authority.ROLE_USER);
-		UserAccount userAccount = new UserAccount(userAccount1.getEmail(), userAccount1.getPassword(), authorities);
-		userAccountService.create(userAccount);
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword(), authorities);
 		Optional<UserAccount> retrievedUserAccount = userAccountService.retrieve(userAccount1.getEmail());
 		assertEquals("UserAccount shouldn't have doubled roles.", 1, retrievedUserAccount.get().getAuthorities().size());
 	}
@@ -110,20 +109,34 @@ public class UserAccountServiceIT {
 	@Test
 	@Transactional
 	public void userAccountEnabledByDefault() {
-		userAccountService.create(userAccount1);
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
 		assertTrue("User account enabled by default", userAccountService.retrieve(userAccount1.getEmail()).get().isEnabled());
 	}
 	
 	@Test
 	@Transactional
 	public void disableUserAccount() {
-		userAccountService.create(userAccount1);
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
 		UserAccount retrieved = userAccountService.retrieve(userAccount1.getEmail()).get();
 		assertTrue("User account enabled by default.", retrieved.isEnabled());
 		userAccountService.update(new UserAccount(retrieved.getId(), retrieved.getEmail()
 				, retrieved.getPassword(), retrieved.getAuthorities(), false));
 		retrieved = userAccountService.retrieve(retrieved.getEmail()).get();
 		assertFalse("User should be disabled.", retrieved.isEnabled());
+	}
+	
+	@Test
+	@Transactional
+	public void testOnNegativeId() {
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		userAccountService.create("user2@example.com", "$@Dsdd");
+		userAccountService.create("user3@example.com", "$@D1823y8sdd");
+		assertEquals("Id should be positive number. (Oracle feature)", true
+				,userAccountService.retrieve(userAccount1.getEmail()).get().getId() > 0);
+		assertEquals("Id should be positive number. (Oracle feature)", true
+				,userAccountService.retrieve("user2@example.com").get().getId() > 0);
+		assertEquals("Id should be positive number. (Oracle feature)", true
+				,userAccountService.retrieve("user3@example.com").get().getId() > 0);
 	}
 
 }

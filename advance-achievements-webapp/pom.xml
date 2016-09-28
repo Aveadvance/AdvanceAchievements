@@ -32,12 +32,38 @@
 	  	<dependency>
 	  		<groupId>${project.groupId}</groupId>
 	  		<artifactId>advance-achievements-configuration</artifactId>
-	  		<version>${project.version}</version>
 	  	</dependency>
 	  	<dependency>
 	  		<groupId>${project.groupId}</groupId>
 	  		<artifactId>advance-achievements-user-account</artifactId>
-	  		<version>${project.version}</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advance-achievements-user-account-repository</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advance-achievements-user-task</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advance-achievements-user-task-repository</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-user-task-category</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-user-task-category-repository</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-workspace</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-workspace-repository</artifactId>
 	  	</dependency>
 	  	<dependency>
 	  		<groupId>javax.servlet</groupId>
