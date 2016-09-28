@@ -1,6 +1,7 @@
 package com.advanceachievements.data.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
@@ -104,7 +105,7 @@ public class UserTaskServiceIT {
 		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
 		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
 		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId());
-		assertEquals("Default task state should be TO_DO.", 3, retrievedUserTasks.size());
+		assertEquals("Three task should be created.", 3, retrievedUserTasks.size());
 	}
 	
 	@Test
@@ -121,8 +122,45 @@ public class UserTaskServiceIT {
 	public void deleteCategoryWhichHaveTwoDifferentUsers() {}
 	
 	@Test
+	@Transactional
+	@WithMockUser(username="example@example.com", roles={"USER_ROLE"})
 	public void testOnNegativePrimaryKey() {
-		assertEquals("Oracle feature",true,false);
+		Workspace workspace = workspaceService.retrieveAll().get(0);
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+		List<UserTask> retrievedUserTasks = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId());
+		assertEquals("Three task should be created.", 3, retrievedUserTasks.size());
+		retrievedUserTasks.forEach(task -> {
+			assertEquals("Primary key should be > 0. (Oracle feature.)",true,task.getId() > 0);
+		});
+	}
+	
+	@Test
+	@Transactional
+	public void complitionDateOfUserTask() {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
+
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getDescription(), testUserTask.getPriority());
+
+		UserTask retrievedUserTask = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId()).get(0);
+		
+		LocalDateTime start = LocalDateTime.now();
+		userTaskService.completeTask(workspace.getId(), retrievedUserTask.getId());
+		retrievedUserTask = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId()).get(0);
+		LocalDateTime stop = LocalDateTime.now();
+		
+		assertTrue("Correct creation date was set up."
+				, retrievedUserTask.getCompletionDate().isEqual(start) 
+				|| retrievedUserTask.getCompletionDate().isAfter(start) 
+				&& retrievedUserTask.getCompletionDate().isBefore(stop));
+
+		userTaskService.completeTask(workspace.getId(), retrievedUserTask.getId());
+		
+		retrievedUserTask = userTaskService.retrieve(testUserAccount.getEmail(), workspace.getId()).get(0);
+		
+		assertNull("Return task to schedule list.", retrievedUserTask.getCompletionDate());
+		
 	}
 	
 	public void testToUpdateUserTaskWithingFriendsWorkspace() {

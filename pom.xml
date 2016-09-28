@@ -10,29 +10,29 @@
   
   <modules>
     <module>advance-achievements-configuration</module>
-    <module>advance-achievements-webapp</module>
+    <module>advanced-achievements-configuration-integration</module>
     <module>advance-achievements-interfaces</module>
+    <module>advance-achievements-webapp</module>
     <module>advance-achievements-user-account</module>
     <module>advance-achievements-user-account-interface</module>
+    <module>advanced-achievements-user-account-entities</module>
     <module>advance-achievements-user-account-integration</module>
     <module>advance-achievements-user-account-repository</module>
     <module>advance-achievements-user-task</module>
     <module>advance-achievements-user-task-interface</module>
+    <module>advanced-achievements-user-task-entities</module>
     <module>advance-achievements-user-task-repository</module>
     <module>advance-achievements-user-task-integration</module>
-    <module>advanced-achievements-user-task-entities</module>
-    <module>advanced-achievements-user-project-integration</module>
-    <module>advanced-achievements-user-task-category-integration</module>
-    <module>advanced-achievements-user-task-category</module>
     <module>advanced-achievements-user-task-category-interface</module>
-    <module>advanced-achievements-workspace</module>
-    <module>advanced-achievements-workspace-interface</module>
-    <module>advanced-achievements-workspace-repository</module>
-    <module>advanced-achievements-user-task-category-repository</module>
     <module>advanced-achievements-user-task-category-entities</module>
+    <module>advanced-achievements-user-task-category</module>
+    <module>advanced-achievements-user-task-category-repository</module>
+    <module>advanced-achievements-user-task-category-integration</module>
+    <module>advanced-achievements-workspace-interface</module>
     <module>advanced-achievements-workspace-entities</module>
-    <module>advanced-achievements-user-account-entities</module>
-    <module>advanced-achievements-configuration-integration</module>
+    <module>advanced-achievements-workspace</module>
+    <module>advanced-achievements-workspace-repository</module>
+    <module>advanced-achievements-workspace-integration</module>
     <module>advanced-achievements-exceptions</module>
   </modules>
   

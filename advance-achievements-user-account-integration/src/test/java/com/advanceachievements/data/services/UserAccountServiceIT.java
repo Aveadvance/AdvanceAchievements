@@ -124,5 +124,19 @@ public class UserAccountServiceIT {
 		retrieved = userAccountService.retrieve(retrieved.getEmail()).get();
 		assertFalse("User should be disabled.", retrieved.isEnabled());
 	}
+	
+	@Test
+	@Transactional
+	public void testOnNegativeId() {
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		userAccountService.create("user2@example.com", "$@Dsdd");
+		userAccountService.create("user3@example.com", "$@D1823y8sdd");
+		assertEquals("Id should be positive number. (Oracle feature)", true
+				,userAccountService.retrieve(userAccount1.getEmail()).get().getId() > 0);
+		assertEquals("Id should be positive number. (Oracle feature)", true
+				,userAccountService.retrieve("user2@example.com").get().getId() > 0);
+		assertEquals("Id should be positive number. (Oracle feature)", true
+				,userAccountService.retrieve("user3@example.com").get().getId() > 0);
+	}
 
 }

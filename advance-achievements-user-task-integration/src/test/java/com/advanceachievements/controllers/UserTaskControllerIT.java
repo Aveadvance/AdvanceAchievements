@@ -97,6 +97,7 @@ public class UserTaskControllerIT {
 	}
 	
 	@Test
+	@WithMockUser(username="example@example.com", roles={"USER_ROLE"})
 	public void withoutTaskTitle() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -107,6 +108,7 @@ public class UserTaskControllerIT {
 	}
 	
 	@Test
+	@WithMockUser(username="example@example.com", roles={"USER_ROLE"})
 	public void blankTaskTitle() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -118,8 +120,12 @@ public class UserTaskControllerIT {
 	}
 	
 	@Test
+	@Transactional
+	@WithMockUser(username="example@example.com", roles={"USER_ROLE"})
 	public void createTaskWithoutDescription1() throws Exception {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
+				.sessionAttr("workspaceId", workspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("title", testUserTask.getTitle())
 				.param("description", "")
@@ -129,8 +135,12 @@ public class UserTaskControllerIT {
 	}
 	
 	@Test
+	@Transactional
+	@WithMockUser(username="example@example.com", roles={"USER_ROLE"})
 	public void createTaskWithoutDescription2() throws Exception {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
+				.sessionAttr("workspaceId", workspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("title", testUserTask.getTitle())
 				.param("priority", testUserTask.getPriority().name()))
@@ -139,6 +149,7 @@ public class UserTaskControllerIT {
 	}
 	
 	@Test
+	@WithMockUser(username="example@example.com", roles={"USER_ROLE"})
 	public void nonExistingPriority() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.post("/newtask")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -189,8 +200,8 @@ public class UserTaskControllerIT {
 		assertEquals("Task created.", testUserTask.getTitle(), userTasks.get(0).getTitle());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post("/deleteusertask")
+				.sessionAttr("workspaceId", workspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("workspaceId", Long.toString(workspace.getId()))
 				.param("id", Long.toString(userTasks.get(0).getId())))
 				.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 		
@@ -237,5 +248,71 @@ public class UserTaskControllerIT {
 		assertEquals("Task updated.", userTask.getCategory(), updatedUserTask.getCategory());
 		assertEquals("Task updated.", userTask.getCreationDate(), updatedUserTask.getCreationDate());
 	}
+	
+	@Test
+	@Transactional
+	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
+	public void completeTask() throws Exception {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
+		
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getTitle()
+				, testUserTask.getPriority());
+		
+		UserTask userTask = userTaskService.retrieve("example@example.com", workspace.getId()).get(0);
+		
+		assertEquals("Task created.", testUserTask.getTitle(), userTask.getTitle());
+		
+		mockMvc.perform(MockMvcRequestBuilders.post("/complete-task")
+				.sessionAttr("workspaceId", workspace.getId())
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("id", Long.toString(userTask.getId())))
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+		
+		UserTask completedUserTask = userTaskService.retrieve("example@example.com", workspace.getId()).get(0);
 
+		assertEquals("Task completed!", userTask.getId(), completedUserTask.getId());
+		assertEquals("Task updated.", userTask.getTitle(), completedUserTask.getTitle());
+		assertEquals("Task updated.", userTask.getDescription(), completedUserTask.getDescription());
+		assertEquals("Task updated.", userTask.getPriority(), completedUserTask.getPriority());
+		assertEquals("Task updated.", userTask.getOwner(), completedUserTask.getOwner());
+		assertEquals("Task updated.", userTask.getCategory(), completedUserTask.getCategory());
+		assertEquals("Task updated.", userTask.getCreationDate(), completedUserTask.getCreationDate());
+		assertEquals("Task completed!", UserTaskState.ACHIEVED, completedUserTask.getState());
+	}
+	
+	@Test
+	@Transactional
+	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
+	public void undoCompletion() throws Exception {
+		Workspace workspace = workspaceService.retrieveAll().get(0);
+		
+		userTaskService.create(workspace.getId(), testUserTask.getTitle(), testUserTask.getTitle()
+				, testUserTask.getPriority());
+		
+		UserTask userTask = userTaskService.retrieve("example@example.com", workspace.getId()).get(0);
+		userTaskService.completeTask(workspace.getId(), userTask.getId());
+		
+		assertEquals("Task created.", testUserTask.getTitle(), userTask.getTitle());
+		
+		userTask = userTaskService.retrieve("example@example.com", workspace.getId()).get(0);
+		
+		assertEquals("Task created.", UserTaskState.ACHIEVED, userTask.getState());
+		
+		mockMvc.perform(MockMvcRequestBuilders.post("/complete-task")
+				.sessionAttr("workspaceId", workspace.getId())
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("id", Long.toString(userTask.getId())))
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+		
+		UserTask completedUserTask = userTaskService.retrieve("example@example.com", workspace.getId()).get(0);
+
+		assertEquals("Task completed!", userTask.getId(), completedUserTask.getId());
+		assertEquals("Task updated.", userTask.getTitle(), completedUserTask.getTitle());
+		assertEquals("Task updated.", userTask.getDescription(), completedUserTask.getDescription());
+		assertEquals("Task updated.", userTask.getPriority(), completedUserTask.getPriority());
+		assertEquals("Task updated.", userTask.getOwner(), completedUserTask.getOwner());
+		assertEquals("Task updated.", userTask.getCategory(), completedUserTask.getCategory());
+		assertEquals("Task updated.", userTask.getCreationDate(), completedUserTask.getCreationDate());
+		assertEquals("Task completed!", UserTaskState.TO_DO, completedUserTask.getState());
+	}
 }

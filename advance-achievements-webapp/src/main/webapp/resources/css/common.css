@@ -75,30 +75,28 @@ code {
 }
 
 /* user-tasks-page */
-div.task-priority-pointer {
-	display:inline-block; 
-	width:10px; 
-	height:10px;
+.navbar-brand {
+	color: #329932 !important;
 }
 
 .VERY_HIGH {
-	background: #FF4136;
+	color: #FF4136;
 }
 
 .HIGH {
-	background: #FF851B;
+	color: #FF851B;
 }
 
 .MIDDLE {
-	background: #FFDC00;
+	color: #eaea32;
 }
 
 .LOW {
-	background: #2ECC40;
+	color: #2ECC40;
 }
 
 .VERY_LOW {
-	background: #01FF70;
+	color: #01FF70;
 }
 
 #priority option.priority-very-high:before {

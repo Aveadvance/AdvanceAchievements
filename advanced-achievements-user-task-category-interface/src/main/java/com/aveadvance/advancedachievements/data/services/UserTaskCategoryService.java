@@ -9,7 +9,7 @@ public interface UserTaskCategoryService {
 
 	public long create(long workspaceId, String name);
 
-	public Optional<UserTaskCategory> retrieve(long id);
+	public Optional<UserTaskCategory> retrieve(long workspaceId, long id);
 
 	public List<UserTaskCategory> retrieveAll(long workspaceId);
 

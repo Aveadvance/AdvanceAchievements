@@ -74,18 +74,20 @@ public class UserTaskServiceBasic implements UserTaskService {
 	@Secured("ROLE_USER")
 	@Transactional
 	public boolean create(long workspaceId, String title, String description, Priority priority, long userTaskCategoryId) {
-		Optional<UserTaskCategory> userTaskCategory = userTaskCategoryService.retrieve(userTaskCategoryId);
-		workspaceService.retrieve(workspaceId).ifPresent(workspace -> {
-			userTaskCategory.ifPresent(category -> {
-				if (category.getWorkspace().equals(workspace))
-					create(workspace, title, description, priority, category);
+		Optional<UserTaskCategory> userTaskCategory = userTaskCategoryService.retrieve(workspaceId, userTaskCategoryId);
+
+		userTaskCategory.ifPresent(category -> {
+			workspaceService.retrieve(workspaceId).ifPresent(workspace -> {
+				create(workspace, title, description, priority, category);
 			});
 		});
+		
 		return true;
 	}
 
 	@Override
 	@Transactional(readOnly=true)
+	@Secured({"ROLE_USER"})
 	public List<UserTask> retrieve(String email, long workspaceId) {
 		// TODO: Create caching of user tasks list request.
 		
@@ -101,6 +103,15 @@ public class UserTaskServiceBasic implements UserTaskService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserAccount owner = userAccountService.retrieve(auth.getName()).get();
 		return userTaskDao.retrieve(owner, workspaceId);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	@Secured({"ROLE_USER"})
+	public List<UserTask> retrieve(String email, long workspaceId, UserTaskState state) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserAccount owner = userAccountService.retrieve(auth.getName()).get();
+		return userTaskDao.retrieve(owner, workspaceId, state);
 	}
 	
 	@Override
@@ -129,6 +140,25 @@ public class UserTaskServiceBasic implements UserTaskService {
 				if (task.getWorkspace().equals(workspace)) {
 					userTaskDao.update(new UserTask(id, workspace, title, description
 							, priority, task.getOwner(), task.getCategory().orElse(null), task.getState(), task.getCreationDate()));
+				}
+			});
+		});
+	}
+
+	@Override
+	@Transactional
+	public void completeTask(long workspaceId, long id) {
+		workspaceService.retrieve(workspaceId).ifPresent(workspace -> {
+			retrieve(workspace.getId(), id).ifPresent(task -> {
+				if (task.getWorkspace().equals(workspace)) {
+					UserTaskState state = UserTaskState.TO_DO;
+					LocalDateTime completionDate = null;
+					if (!task.getState().equals(UserTaskState.ACHIEVED)) {
+						state = UserTaskState.ACHIEVED;
+						completionDate = LocalDateTime.now();
+					}
+					userTaskDao.update(new UserTask(task.getId(), task.getWorkspace(), task.getTitle(), task.getDescription()
+							, task.getPriority(), task.getOwner(), task.getCategory().orElse(null), state, task.getCreationDate(), completionDate));
 				}
 			});
 		});

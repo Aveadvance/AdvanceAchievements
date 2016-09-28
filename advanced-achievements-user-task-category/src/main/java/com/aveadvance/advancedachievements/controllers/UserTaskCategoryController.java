@@ -1,5 +1,7 @@
 package com.aveadvance.advancedachievements.controllers;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -10,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aveadvance.advanceachievements.data.dto.UserTaskCategoryDto;
+import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.services.UserTaskCategoryService;
 import com.aveadvance.advancedachievements.exceptions.CategoryNotEmptyException;
 import com.aveadvance.advancedachievements.exceptions.ExceptionsDto;
@@ -32,9 +35,22 @@ public class UserTaskCategoryController {
 		}
 		
 		long workspaceId = (Long) request.getSession().getAttribute("workspaceId");
-		
-		userTaskCategoryService.create(workspaceId, userTaskCategoryDto.getName());
+		if (userTaskCategoryDto.getId() == 0) {
+			userTaskCategoryService.create(workspaceId, userTaskCategoryDto.getName());
+		} else {
+			userTaskCategoryService.update(workspaceId, userTaskCategoryDto.getId(), userTaskCategoryDto.getName());
+		}
 		return "redirect:/personal-tasks-page";
+	}
+	
+	@RequestMapping("/update-task-category-page")
+	public String updateTaskCategoryPage(long id, HttpServletRequest request, Model model) {
+		long workspaceId = (Long) request.getSession().getAttribute("workspaceId");
+		Optional<UserTaskCategory> userTaskCategory = userTaskCategoryService.retrieve(workspaceId, id);
+		userTaskCategory.ifPresent(category -> {
+			model.addAttribute("userTaskCategoryToUpdate", category);
+		});
+		return createNewTaskCategoryPage();
 	}
 
 	@RequestMapping("/deletetaskcategory")

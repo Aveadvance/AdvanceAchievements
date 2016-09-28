@@ -43,8 +43,12 @@ public class UserTaskCategoryServiceBasic implements UserTaskCategoryService {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Optional<UserTaskCategory> retrieve(long id) {
-		return userTaskCategoryDao.retrieve(id);
+	public Optional<UserTaskCategory> retrieve(long workspaceId, long id) {
+		Optional<UserTaskCategory>userTaskCategory = userTaskCategoryDao.retrieve(id);
+		if (userTaskCategory.isPresent() && userTaskCategory.get().getWorkspace().getId() != workspaceId) {
+			userTaskCategory = Optional.empty();
+		}
+		return userTaskCategory;
 	}
 
 	@Override
@@ -58,10 +62,8 @@ public class UserTaskCategoryServiceBasic implements UserTaskCategoryService {
 	@Transactional
 	public void update(long workspaceId, long id, String name) {
 		workspaceService.retrieve(workspaceId).ifPresent(workspace -> {
-			retrieve(id).ifPresent(userTaskCategory -> {
-				if (userTaskCategory.getWorkspace().equals(workspace)) {
-					userTaskCategoryDao.update(new UserTaskCategory(workspace, id, name));
-				}
+			retrieve(workspace.getId(), id).ifPresent(userTaskCategory -> {
+				userTaskCategoryDao.update(new UserTaskCategory(workspace, id, name));
 			});
 		});
 	}

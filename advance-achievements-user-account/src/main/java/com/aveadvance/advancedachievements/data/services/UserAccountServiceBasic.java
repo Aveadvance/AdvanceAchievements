@@ -1,19 +1,19 @@
 package com.aveadvance.advancedachievements.data.services;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.advanceachievements.data.dao.UserAccountDao;
 import com.aveadvance.advancedachievements.data.entities.Authority;
 import com.aveadvance.advancedachievements.data.entities.UserAccount;
-import com.aveadvance.advancedachievements.data.entities.Workspace;
 import com.aveadvance.advancedachievements.data.entities.WorkspaceType;
 
 @Service
@@ -46,11 +46,18 @@ public class UserAccountServiceBasic implements UserAccountService {
 	}
 
 	@Transactional
+	@Secured({"ROLE_USER"})
 	private boolean create(UserAccount userAccount) {
 		boolean result = retrieve(userAccount.getEmail()).isPresent();
 		if (!result) {
 			userAccountDao.create(userAccount);
-			workspaceService.create(new Workspace(WorkspaceType.PRIVATE, new HashSet<>(Arrays.asList(userAccount))));
+			
+			/* Automatic authentication in due to lack of email authentication */
+			/* TODO: Is it safe? */
+			Authentication auth = new UsernamePasswordAuthenticationToken(userAccount.getEmail(), null, null);
+			SecurityContextHolder.getContext().setAuthentication(auth);
+			
+			workspaceService.create(WorkspaceType.PRIVATE);
 		}
 		return !result;
 	}

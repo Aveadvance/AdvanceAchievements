@@ -19,6 +19,10 @@
 	SELECT acc.id, email, authority FROM user_accounts acc 
 		INNER JOIN user_account_authorities auth ON acc.id=auth.id;
 	SELECT id, user_task_category_id FROM user_tasks;
+
+	ALTER TABLE user_tasks ADD(
+		completion_date TIMESTAMP
+	);
 ***
 
 CREATE SEQUENCE user_accounts_seq START WITH 1 INCREMENT BY 1;
@@ -87,6 +91,7 @@ CREATE TABLE user_tasks (
 	user_task_category_id NUMBER(19, 0),
 	state VARCHAR2(20 CHAR) NOT NULL,
 	creation_date TIMESTAMP NOT NULL,
+	completion_date TIMESTAMP,
 	PRIMARY KEY (id),
 	CONSTRAINT task_account_foreign_key FOREIGN KEY (owner_user_account_id) REFERENCES user_accounts,
 	CONSTRAINT task_workspace_fk FOREIGN KEY (workspace_id) REFERENCES workspaces,

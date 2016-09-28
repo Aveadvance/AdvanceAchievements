@@ -1,5 +1,6 @@
 package com.advanceachievements.controllers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import com.advanceachievements.data.dto.UserTaskDto;
 import com.advanceachievements.data.services.UserTaskService;
 import com.aveadvance.advancedachievements.data.entities.UserTask;
 import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
+import com.aveadvance.advancedachievements.data.entities.UserTaskState;
 import com.aveadvance.advancedachievements.data.services.UserTaskCategoryService;
 import com.aveadvance.advancedachievements.exceptions.ExceptionsDto;
 
@@ -38,17 +40,92 @@ public class UserTaskController {
 	/* TODO: What if user insert friends workspaceId? */
 	@RequestMapping("/personal-tasks-page")
 	@Secured("hasRole(ROLE_USER)")
-	public String personalTasksPage(HttpServletRequest request, Model model) {
+	public String personalTasksPage(String state, String completed, String created, HttpServletRequest request, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		UserTaskState taskState = UserTaskState.TO_DO;
+		Optional<LocalDateTime> createdSince = Optional.empty();
+		Optional<LocalDateTime> createdTill = Optional.empty();
+		Optional<LocalDateTime> completedSince = Optional.empty();
+		Optional<LocalDateTime> completedTill = Optional.empty();
+		
+		LocalDateTime now = LocalDateTime.now();
+		
+		if (state != null)
+			switch (state) {
+				case "completed":
+					taskState = UserTaskState.ACHIEVED;
+					break;
+			}
+		
+		if (created != null)
+			switch (created) {
+				case "today":
+					createdSince = Optional.of(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0));
+					createdTill = Optional.of(now);
+					break;
+				case "yesterday":
+					createdSince = Optional.of(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0).minusDays(1));
+					createdTill = Optional.of(now);
+					break;
+			}
+		
+		if (completed != null)
+			switch (completed) {
+				case "today":
+					completedSince = Optional.of(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0));
+					completedTill = Optional.of(now);
+					break;
+				case "yesterday":
+					completedSince = Optional.of(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0).minusDays(1));
+					completedTill = Optional.of(now);
+					break;
+			}
+		
+		final Optional<LocalDateTime> createdSinceF = createdSince;
+		final Optional<LocalDateTime> createdTillF = createdTill;
+		final Optional<LocalDateTime> completedSinceF = completedSince;
+		final Optional<LocalDateTime> completedTillF = completedTill;
+		
 		long workspaceId = (Long)request.getSession().getAttribute("workspaceId");
-		Map<Optional<UserTaskCategory>,List<UserTask>> personalTasks = userTaskService.retrieve(auth.getName(), workspaceId)
+		
+		/* Retrieve tasks and collect them to map. */
+		Map<Optional<UserTaskCategory>,List<UserTask>> personalTasks = userTaskService.retrieve(auth.getName(), workspaceId, taskState)
 				.parallelStream()
+				.filter(task -> {
+					/* TODO: Move filtering to client side. */
+					
+					if (completedSinceF.isPresent() && completedTillF.isPresent()) {
+						return task.getCompletionDate().isAfter(completedSinceF.get()) 
+								&& task.getCompletionDate().isBefore(completedTillF.get());
+					} else if (createdSinceF.isPresent() && createdTillF.isPresent()) {
+						return task.getCreationDate().isAfter(createdSinceF.get())
+								&& task.getCreationDate().isBefore(createdTillF.get());
+					}
+					
+					return true;
+				})
 				.collect(Collectors.groupingBy(UserTask::getCategory));
+		
+		/* Retrieve empty task categories. */
 		Map<Optional<UserTaskCategory>,List<UserTask>> allCategories = userTaskCategoryService.retrieveAll(workspaceId)
 				.parallelStream()
 				.filter(category -> !personalTasks.containsKey(Optional.ofNullable(category)))
 				.collect(Collectors.toMap(category -> Optional.ofNullable(category), category -> new ArrayList<UserTask>()));
+		
+		/* Put empty categories to list. */
 		personalTasks.putAll(allCategories);
+		
+		/* Sort tasks by priority and date. */
+		personalTasks.entrySet().forEach(action -> action.getValue().sort((e1, e2) -> {
+			int firstCompare = e1.getPriority().compareTo(e2.getPriority());
+			if (firstCompare != 0) {
+				return firstCompare;
+			} else {
+				return e1.getCreationDate().compareTo(e2.getCreationDate());
+			}
+		}));
+		
 		model.addAttribute("personalTasks", personalTasks);
 		
 		Optional.ofNullable((ExceptionsDto)request.getSession().getAttribute("exceptionsDto")).ifPresent(exceptionsDto -> {
@@ -81,6 +158,13 @@ public class UserTaskController {
 		ExceptionsDto exceptions = new ExceptionsDto();
 		exceptions.addException("global", "Data do not match. Try again please.");
 		request.getSession().setAttribute("exceptionsDto", exceptions);
+		return "redirect:/personal-tasks-page";
+	}
+	
+	@RequestMapping("/complete-task")
+	public String updateTaskPage(long id, HttpServletRequest request) {
+		long workspaceId = (Long) request.getSession().getAttribute("workspaceId");
+		userTaskService.completeTask(workspaceId, id);
 		return "redirect:/personal-tasks-page";
 	}
 

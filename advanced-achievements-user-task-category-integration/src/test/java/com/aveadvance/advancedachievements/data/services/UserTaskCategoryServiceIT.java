@@ -2,6 +2,8 @@ package com.aveadvance.advancedachievements.data.services;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +20,6 @@ import com.aveadvance.advancedachievements.data.entities.UserTask;
 import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.entities.UserTaskState;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
-import com.aveadvance.advancedachievements.data.services.UserAccountService;
 import com.aveadvance.advancedachievements.exceptions.CategoryNotEmptyException;
 
 @ActiveProfiles("development")
@@ -73,6 +74,24 @@ public class UserTaskCategoryServiceIT {
 				, recievedUserTask.getTitle());
 		
 		/* Try to delete */
-		userTaskService.delete(personalWorkspace.getId(), recievedUserTask.getId());
+		userTaskCategoryService.delete(personalWorkspace.getId(), userTaskCategory.getId());
+	}
+	
+	@Test
+	@Transactional
+	@WithMockUser(username="example@example.com", authorities={"ROLE_USER"})
+	public void testOnNegativePrimaryKey() {
+		Workspace personalWorkspace = workspaceService.retrieveAll().get(0);
+		
+		userTaskCategoryService.create(personalWorkspace.getId(), "Category1");
+		userTaskCategoryService.create(personalWorkspace.getId(), "Category2");
+		userTaskCategoryService.create(personalWorkspace.getId(), "Category3");
+		
+		List<UserTaskCategory> categories = userTaskCategoryService.retrieveAll(personalWorkspace.getId());
+		assertEquals("Categories saved.", 3, categories.size());
+		categories.forEach(category -> {
+			assertEquals("Categories saved.", true, category.getId() > 0);
+		});
+		
 	}
 }

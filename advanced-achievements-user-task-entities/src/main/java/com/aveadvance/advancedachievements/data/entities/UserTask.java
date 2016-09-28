@@ -64,6 +64,9 @@ public class UserTask {
 	@Column(name="creation_date")
 	private LocalDateTime creationDate;
 	
+	@Column(name="completion_date")
+	private LocalDateTime completionDate;
+	
 	public UserTask() {}
 
 	public UserTask(Workspace workspace, String title, String description, Priority priority, UserAccount owner
@@ -78,6 +81,11 @@ public class UserTask {
 
 	public UserTask(long id, Workspace workspace, String title, String description, Priority priority, UserAccount owner
 			, UserTaskCategory category, UserTaskState state, LocalDateTime creationDate) {
+		this(id, workspace, title, description, priority, owner, category, state, creationDate, null);
+	}
+
+	public UserTask(long id, Workspace workspace, String title, String description, Priority priority, UserAccount owner
+			, UserTaskCategory category, UserTaskState state, LocalDateTime creationDate, LocalDateTime completionDate) {
 		this.id = id;
 		this.workspace = workspace;
 		this.title = title;
@@ -87,6 +95,7 @@ public class UserTask {
 		this.category = category;
 		this.state = state;
 		this.creationDate = creationDate;
+		this.completionDate = completionDate;
 	}
 	
 	public long getId() {
@@ -119,6 +128,10 @@ public class UserTask {
 
 	public LocalDateTime getCreationDate() {
 		return creationDate;
+	}
+
+	public LocalDateTime getCompletionDate() {
+		return completionDate;
 	}
 
 	public UserTaskState getState() {

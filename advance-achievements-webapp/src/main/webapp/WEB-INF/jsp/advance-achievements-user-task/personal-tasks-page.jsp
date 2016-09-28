@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Advance Achievements</title>
+    <title>Advanced Achievements</title>
     
     <script>
     	var rootPath = "${ pageContext.request.contextPath }";
@@ -35,7 +35,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Advance Achievements</a>
+          <a class="navbar-brand" href="${ pageContext.request.contextPath }/">Advance Achievements</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <!-- <ul class="nav navbar-nav">
@@ -44,13 +44,11 @@
             <li><a href="#contact">Contact</a></li>
           </ul> -->
 			<ul class="nav navbar-nav navbar-right">
-				<li>
-					<form action="${ pageContext.request.contextPath }/logout" method="post">
-						<input type="submit" class="btn btn-link" value="Logout" />
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-					</form>
-				</li>
+				<li><a href="#" onclick="getElementById('logout').submit()">Logout</a></li>
 			</ul>
+			<form id="logout" style="display:none;" action="${ pageContext.request.contextPath }/logout" method="post">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			</form>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
@@ -71,6 +69,50 @@
 		</div>
     	<a href="${ pageContext.request.contextPath }/create-task-page" class="btn btn-success">Create new task</a>
     	<a href="${ pageContext.request.contextPath }/create-task-category-page" class="btn btn-success">Create new category</a>
+		<div class="btn-group">
+	    	<button class="btn btn-default dropdown-toggle" type="button" id="filter-state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				Filter state
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="filter-state">
+				<li><a href="${ pageContext.request.contextPath }/personal-tasks-page">To do</a></li>
+				<li><a href="${ pageContext.request.contextPath }/personal-tasks-page?state=completed">Completed</a></li>
+				<!-- <li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Separated link</a></li> -->
+			</ul>
+		</div>
+		
+		<div class="btn-group">
+			<button class="btn btn-default dropdown-toggle" type="button" id="filter-created" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				Filter created
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="filter-created">
+				<li><a href="${ pageContext.request.contextPath }/personal-tasks-page?created=today">Today</a></li>
+				<li><a href="${ pageContext.request.contextPath }/personal-tasks-page?created=yesterday">Yesterday</a></li>
+				<!-- <li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Separated link</a></li> -->
+			</ul>
+		</div>
+		
+		<div class="btn-group">
+			<button class="btn btn-default dropdown-toggle" type="button" id="filter-completed" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				Filter completed
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="filter-completed">
+				<li><a href="${ pageContext.request.contextPath }/personal-tasks-page?state=completed&created=today">Today</a></li>
+				<li><a href="${ pageContext.request.contextPath }/personal-tasks-page?state=completed&created=yesterday">Yesterday</a></li>
+				<!-- <li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Separated link</a></li> -->
+			</ul>
+		</div>
 		<p></p>
 		<div class="list-group">
 			<c:forEach items="${ personalTasks }" var="entry">
@@ -83,10 +125,10 @@
 						<c:forEach items="${ entry.value }" var="task">
 							<li class="list-group-item">
 								<h4 class="list-group-item-heading">
-								<div class="task-priority-pointer ${ task.priority }"></div>
+								<span class="glyphicon glyphicon-flag ${ task.priority }" aria-hidden="true"></span>
 								${ task.title }
 								
-								<span class="btn-group" style="float:right;">
+								<div class="btn-group" style="float:right;">
 									<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 										Task menu
 										<span class="caret"></span>
@@ -99,7 +141,17 @@
 									<li role="separator" class="divider"></li>
 									<li><a href="#">Separated link</a></li> -->
 									</ul>
-								</span>
+								</div>
+								<div style="float:right;margin-right:10px;">
+									<a href="${ pageContext.request.contextPath }/complete-task?id=${ task.id }">
+										<c:if test="${ task.state eq 'ACHIEVED' }">
+											<span style="font-size:1.5em; color:#2ECC40; cursor:pointer;" class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+										</c:if>
+										<c:if test="${ task.state ne 'ACHIEVED' }">
+											<span style="font-size:1.5em; color:#2ECC40; cursor:pointer;" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+										</c:if>
+									</a>
+								</div>
 								</h4>
 								<div style="clear:both;"></div>
 								
@@ -110,7 +162,8 @@
 						</c:forEach>
 						</ul>
 						<c:if test="${ entry.key.present }">
-							<a href="${ pageContext.request.contextPath }/create-task-page/${ entry.key.present?entry.key.get().id:"" }" class="btn btn-success">Create new task</a>
+							<a href="${ pageContext.request.contextPath }/create-task-page/${ entry.key.present?entry.key.get().id:"" }" class="btn btn-success">Create new task in category</a>
+							<a href="${ pageContext.request.contextPath }/update-task-category-page?id=${ entry.key.get().id }" class="btn btn-primary">Update category</a>
 							<button class="btn btn-warning" onclick="deleteTaskCategory(${ entry.key.present?entry.key.get().id:'' })">Delete category</button>
 						</c:if>
 					</div>
@@ -121,7 +174,7 @@
 
     <footer class="footer">
       <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
+        <p class="text-muted">Aveadvance © 2016</p>
       </div>
     </footer>
 
