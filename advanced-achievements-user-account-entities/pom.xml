@@ -3,8 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.advanceachievements</groupId>
-    <artifactId>advance-achievements-parent</artifactId>
+    <groupId>com.aveadvance.advancedachievements</groupId>
+    <artifactId>advanced-achievements-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>advanced-achievements-user-account-entities</artifactId>

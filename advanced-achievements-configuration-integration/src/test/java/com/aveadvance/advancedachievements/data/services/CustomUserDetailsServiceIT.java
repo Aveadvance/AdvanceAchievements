@@ -19,9 +19,9 @@ import com.aveadvance.advancedachievements.data.entities.UserAccount;
 
 
 @ActiveProfiles("development")
-@ContextConfiguration(locations = {"classpath:com/advanceachievements/configurations/data-test-context.xml"
-		, "classpath:com/advanceachievements/configurations/service-context.xml"
-		, "classpath:com/advanceachievements/configurations/dao-context.xml"})
+@ContextConfiguration(locations = {"classpath:com/aveadvance/advancedachievements/configurations/data-test-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/service-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/dao-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CustomUserDetailsServiceIT {
 	

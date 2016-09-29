@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.advanceachievements.data.services.UserTaskService;
 import com.aveadvance.advancedachievements.data.entities.Authority;
 import com.aveadvance.advancedachievements.data.entities.Priority;
 import com.aveadvance.advancedachievements.data.entities.UserAccount;
@@ -35,13 +34,14 @@ import com.aveadvance.advancedachievements.data.entities.UserTaskState;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
 import com.aveadvance.advancedachievements.data.services.UserAccountService;
 import com.aveadvance.advancedachievements.data.services.UserTaskCategoryService;
+import com.aveadvance.advancedachievements.data.services.UserTaskService;
 import com.aveadvance.advancedachievements.data.services.WorkspaceService;
 
 @ActiveProfiles("development")
-@ContextConfiguration(locations={"classpath:com/advanceachievements/configurations/data-test-context.xml"
-		, "classpath:com/advanceachievements/configurations/dispatcher-servlet.xml"
-		, "classpath:com/advanceachievements/configurations/dao-context.xml"
-		, "classpath:com/advanceachievements/configurations/service-context.xml"})
+@ContextConfiguration(locations={"classpath:com/aveadvance/advancedachievements/configurations/data-test-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/dispatcher-servlet.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/dao-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/service-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 public class UserTaskCategoryControllerIT {

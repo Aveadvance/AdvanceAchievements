@@ -2,27 +2,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
-  <groupId>com.advanceachievements</groupId>
-  <artifactId>advance-achievements-parent</artifactId>
+  <groupId>com.aveadvance.advancedachievements</groupId>
+  <artifactId>advanced-achievements-parent</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
   <packaging>pom</packaging>
   
   <modules>
-    <module>advance-achievements-configuration</module>
+    <module>advanced-achievements-configuration</module>
     <module>advanced-achievements-configuration-integration</module>
-    <module>advance-achievements-interfaces</module>
-    <module>advance-achievements-webapp</module>
-    <module>advance-achievements-user-account</module>
-    <module>advance-achievements-user-account-interface</module>
+    <module>advanced-achievements-interfaces</module>
+    <module>advanced-achievements-webapp</module>
+    <module>advanced-achievements-user-account</module>
+    <module>advanced-achievements-user-account-interface</module>
     <module>advanced-achievements-user-account-entities</module>
-    <module>advance-achievements-user-account-integration</module>
-    <module>advance-achievements-user-account-repository</module>
-    <module>advance-achievements-user-task</module>
-    <module>advance-achievements-user-task-interface</module>
+    <module>advanced-achievements-user-account-integration</module>
+    <module>advanced-achievements-user-account-repository</module>
+    <module>advanced-achievements-user-task</module>
+    <module>advanced-achievements-user-task-interface</module>
     <module>advanced-achievements-user-task-entities</module>
-    <module>advance-achievements-user-task-repository</module>
-    <module>advance-achievements-user-task-integration</module>
+    <module>advanced-achievements-user-task-repository</module>
+    <module>advanced-achievements-user-task-integration</module>
     <module>advanced-achievements-user-task-category-interface</module>
     <module>advanced-achievements-user-task-category-entities</module>
     <module>advanced-achievements-user-task-category</module>
@@ -136,27 +136,27 @@
   	<dependencies>
 	    <dependency>
 	      <groupId>${project.groupId}</groupId>
-	      <artifactId>advance-achievements-configuration</artifactId>
+	      <artifactId>advanced-achievements-configuration</artifactId>
 	      <version>${project.version}</version>
 	    </dependency>
 	    <dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>advance-achievements-interfaces</artifactId>
+			<artifactId>advanced-achievements-interfaces</artifactId>
 			<version>${project.version}</version>
 	    </dependency>
 	  	<dependency>
 	  		<groupId>${project.groupId}</groupId>
-	  		<artifactId>advance-achievements-user-account-interface</artifactId>
+	  		<artifactId>advanced-achievements-user-account-interface</artifactId>
 	    	<version>${project.version}</version>
 	  	</dependency>
 	  	<dependency>
 	  		<groupId>${project.groupId}</groupId>
-	  		<artifactId>advance-achievements-user-account</artifactId>
+	  		<artifactId>advanced-achievements-user-account</artifactId>
 	    	<version>${project.version}</version>
 	  	</dependency>
 	    <dependency>
 	    	<groupId>${project.groupId}</groupId>
-	    	<artifactId>advance-achievements-user-account-repository</artifactId>
+	    	<artifactId>advanced-achievements-user-account-repository</artifactId>
 	    	<version>${project.version}</version>
 	    </dependency>
 	  	<dependency>
@@ -186,17 +186,17 @@
 	  	</dependency>
 	  	<dependency>
 	  		<groupId>${project.groupId}</groupId>
-	  		<artifactId>advance-achievements-user-task-interface</artifactId>
+	  		<artifactId>advanced-achievements-user-task-interface</artifactId>
 	      	<version>${project.version}</version>
 	  	</dependency>
 	    <dependency>
 	      <groupId>${project.groupId}</groupId>
-	      <artifactId>advance-achievements-user-task</artifactId>
+	      <artifactId>advanced-achievements-user-task</artifactId>
 	      <version>${project.version}</version>
 	    </dependency>
 	  	<dependency>
 	  		<groupId>${project.groupId}</groupId>
-	  		<artifactId>advance-achievements-user-task-repository</artifactId>
+	  		<artifactId>advanced-achievements-user-task-repository</artifactId>
 	      	<version>${project.version}</version>
 	  	</dependency>
 	  	<dependency>

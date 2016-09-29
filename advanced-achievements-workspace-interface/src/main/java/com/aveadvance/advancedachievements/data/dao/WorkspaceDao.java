@@ -2,7 +2,7 @@ package com.aveadvance.advancedachievements.data.dao;
 
 import java.util.List;
 
-import com.advanceachievements.data.dao.Repo;
+import com.aveadvance.advancedachievements.data.dao.Repo;
 import com.aveadvance.advancedachievements.data.entities.UserAccount;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
 

@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import com.advanceachievements.data.dao.AbstractDao;
+import com.aveadvance.advancedachievements.data.dao.AbstractDao;
 import com.aveadvance.advancedachievements.data.entities.UserAccount;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
 

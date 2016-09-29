@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.aveadvance.advanceachievements.data.dto.UserTaskCategoryDto;
+import com.aveadvance.advancedachievements.data.dto.UserTaskCategoryDto;
 import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.services.UserTaskCategoryService;
 import com.aveadvance.advancedachievements.exceptions.CategoryNotEmptyException;

@@ -14,18 +14,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.advanceachievements.data.services.UserTaskService;
 import com.aveadvance.advancedachievements.data.entities.Priority;
 import com.aveadvance.advancedachievements.data.entities.UserTask;
 import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.entities.UserTaskState;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.services.UserTaskService;
 import com.aveadvance.advancedachievements.exceptions.CategoryNotEmptyException;
 
 @ActiveProfiles("development")
-@ContextConfiguration(locations={"classpath:com/advanceachievements/configurations/data-test-context.xml"
-		, "classpath:com/advanceachievements/configurations/dao-context.xml"
-		, "classpath:com/advanceachievements/configurations/service-context.xml"})
+@ContextConfiguration(locations={"classpath:com/aveadvance/advancedachievements/configurations/data-test-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/dao-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/service-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserTaskCategoryServiceIT {
 	

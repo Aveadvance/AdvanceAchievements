@@ -10,10 +10,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.advanceachievements.data.services.UserTaskService;
 import com.aveadvance.advancedachievements.data.dao.UserTaskCategoryDao;
 import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.services.UserTaskService;
 import com.aveadvance.advancedachievements.exceptions.CategoryNotEmptyException;
 
 @Service
