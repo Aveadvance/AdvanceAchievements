@@ -2,19 +2,23 @@
 	DROP SEQUENCE user_accounts_seq;
 	DROP SEQUENCE user_task_seq;
 	DROP SEQUENCE user_task_category_seq;
+	DROP SEQUENCE workspace_seq;
+	DROP SEQUENCE user_project_seq;
 	DROP TABLE user_accounts CASCADE CONSTRAINTS;
 	DROP TABLE user_account_authorities CASCADE CONSTRAINTS;
 	DROP TABLE workspaces CASCADE CONSTRAINTS;
 	DROP TABLE user_account_workspace CASCADE CONSTRAINTS;
 	DROP TABLE user_tasks CASCADE CONSTRAINTS;
 	DROP TABLE user_task_categories CASCADE CONSTRAINTS;
+	DROP TABLE user_projects CASCADE CONSTRAINTS;
 
+	DELETE FROM workspaces;
 	DELETE FROM user_accounts;
 	DELETE FROM user_account_authorities;
 	DELETE FROM user_account_workspace;
 	DELETE FROM user_tasks;
 	DELETE FROM user_task_categories;
-	DELETE FROM workspaces;
+	DELETE FROM user_projects;
 
 	SELECT acc.id, email, authority FROM user_accounts acc 
 		INNER JOIN user_account_authorities auth ON acc.id=auth.id;
@@ -29,6 +33,7 @@ CREATE SEQUENCE user_accounts_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE workspace_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE user_task_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE user_task_category_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE user_project_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE user_accounts (
 	id NUMBER(19,0) NOT NULL,
@@ -87,7 +92,7 @@ CREATE TABLE user_tasks (
 	description VARCHAR2(1000 CHAR),
 	priority VARCHAR2(30 CHAR) NOT NULL,
 	owner_user_account_id NUMBER(19, 0) NOT NULL,
-	workspace_id NUMBER(19, 0),
+	workspace_id NUMBER(19, 0) NOT NULL,
 	user_task_category_id NUMBER(19, 0),
 	state VARCHAR2(20 CHAR) NOT NULL,
 	creation_date TIMESTAMP NOT NULL,
@@ -97,3 +102,19 @@ CREATE TABLE user_tasks (
 	CONSTRAINT task_workspace_fk FOREIGN KEY (workspace_id) REFERENCES workspaces,
 	CONSTRAINT task_category_fk FOREIGN KEY (user_task_category_id) REFERENCES user_task_categories
 );
+
+CREATE TABLE user_projects (
+	id NUMBER(19,0) NOT NULL,
+	name VARCHAR2(100 CHAR) NOT NULL,
+	description VARCHAR2(1000 CHAR),
+	workspace_id NUMBER(19, 0) NOT NULL,
+	project_workspace_id NUMBER(19, 0) NOT NULL,
+	creation_date TIMESTAMP NOT NULL,
+	PRIMARY KEY (id),
+	CONSTRAINT project_workspace_fk FOREIGN KEY (workspace_id) REFERENCES workspaces,
+	CONSTRAINT project_workspace_workspace_fk FOREIGN KEY (project_workspace_id) REFERENCES workspaces
+);
+
+*** FOR PROJECT AND TASK CATEGORY TABLES?	
+	owner_user_account_id NUMBER(19, 0) NOT NULL,
+***

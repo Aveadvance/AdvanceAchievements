@@ -24,6 +24,10 @@
   	</dependency>
   	<dependency>
   		<groupId>${project.groupId}</groupId>
+  		<artifactId>advanced-achievements-user-project-interface</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
   		<artifactId>advanced-achievements-exceptions</artifactId>
   	</dependency>
   	<dependency>

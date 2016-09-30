@@ -34,6 +34,11 @@
     <module>advanced-achievements-workspace-repository</module>
     <module>advanced-achievements-workspace-integration</module>
     <module>advanced-achievements-exceptions</module>
+    <module>advanced-achievements-user-project</module>
+    <module>advanced-achievements-user-project-integration</module>
+    <module>advanced-achievements-user-project-interface</module>
+    <module>advanced-achievements-user-project-entities</module>
+    <module>advanced-achievements-user-project-repository</module>
   </modules>
   
   <properties>
@@ -224,6 +229,26 @@
 	      <artifactId>advanced-achievements-user-task-category-entities</artifactId>
 	      <version>${project.version}</version>
 	    </dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>advanced-achievements-user-project-interface</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>advanced-achievements-user-project-entities</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>advanced-achievements-user-project-repository</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>advanced-achievements-user-project</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	  	<dependency>
 	  		<groupId>${project.groupId}</groupId>
 	  		<artifactId>advanced-achievements-exceptions</artifactId>

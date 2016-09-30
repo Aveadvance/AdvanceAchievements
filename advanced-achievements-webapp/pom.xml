@@ -66,6 +66,14 @@
 	  		<artifactId>advanced-achievements-workspace-repository</artifactId>
 	  	</dependency>
 	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-user-project</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>${project.groupId}</groupId>
+	  		<artifactId>advanced-achievements-user-project-repository</artifactId>
+	  	</dependency>
+	  	<dependency>
 	  		<groupId>javax.servlet</groupId>
 	  		<artifactId>javax.servlet-api</artifactId>
 	  	</dependency>

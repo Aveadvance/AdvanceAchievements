@@ -21,11 +21,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aveadvance.advancedachievements.data.dto.UserTaskDto;
+import com.aveadvance.advancedachievements.data.entities.UserProject;
 import com.aveadvance.advancedachievements.data.entities.UserTask;
 import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 import com.aveadvance.advancedachievements.data.entities.UserTaskState;
+import com.aveadvance.advancedachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.entities.WorkspaceType;
+import com.aveadvance.advancedachievements.data.services.UserProjectService;
 import com.aveadvance.advancedachievements.data.services.UserTaskCategoryService;
 import com.aveadvance.advancedachievements.data.services.UserTaskService;
+import com.aveadvance.advancedachievements.data.services.WorkspaceService;
 import com.aveadvance.advancedachievements.exceptions.ExceptionsDto;
 
 @Controller
@@ -37,11 +42,42 @@ public class UserTaskController {
 	@Autowired
 	private UserTaskCategoryService userTaskCategoryService;
 	
+	@Autowired
+	private WorkspaceService workspaceService;
+	
+	@Autowired
+	private UserProjectService userProjectService;
+	
 	/* TODO: What if user insert friends workspaceId? */
 	@RequestMapping("/personal-tasks-page")
 	@Secured("hasRole(ROLE_USER)")
-	public String personalTasksPage(String state, String completed, String created, HttpServletRequest request, Model model) {
+	public String personalTasksPage(String type, Long id, String state, String completed, String created, HttpServletRequest request, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		if (request.getSession().getAttribute("workspaceId") == null) {
+			Workspace workspace = workspaceService.retrieveAll().get(0);
+			request.getSession().setAttribute("parentWorkspaceId", workspace.getId());
+			request.getSession().setAttribute("parentWorkspaceType", workspace.getType());
+			request.getSession().setAttribute("workspaceId", workspace.getId());
+			request.getSession().setAttribute("workspaceType", workspace.getType());
+		}
+		
+		if (type != null) {
+			switch (type) {
+				case "project":
+					userProjectService.retrieve(id).ifPresent(project -> {
+						request.getSession().setAttribute("workspaceId", project.getProjectWorkspace().getId());
+						request.getSession().setAttribute("workspaceType", project.getProjectWorkspace().getType());
+						request.getSession().setAttribute("projectId", project.getId());
+					});
+					break;
+				case "home":
+					request.getSession().setAttribute("workspaceId", (long) request.getSession().getAttribute("parentWorkspaceId"));
+					request.getSession().setAttribute("workspaceType", (WorkspaceType) request.getSession().getAttribute("parentWorkspaceType"));
+					break;
+				default:
+			}
+		}
 		
 		UserTaskState taskState = UserTaskState.TO_DO;
 		Optional<LocalDateTime> createdSince = Optional.empty();
@@ -66,7 +102,7 @@ public class UserTaskController {
 					break;
 				case "yesterday":
 					createdSince = Optional.of(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0).minusDays(1));
-					createdTill = Optional.of(now);
+					createdTill = Optional.of(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0));
 					break;
 			}
 		
@@ -78,7 +114,7 @@ public class UserTaskController {
 					break;
 				case "yesterday":
 					completedSince = Optional.of(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0).minusDays(1));
-					completedTill = Optional.of(now);
+					completedTill = Optional.of(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 0, 0, 0));
 					break;
 			}
 		
@@ -127,6 +163,15 @@ public class UserTaskController {
 		}));
 		
 		model.addAttribute("personalTasks", personalTasks);
+		model.addAttribute("workspaceType", (WorkspaceType) request.getSession().getAttribute("workspaceType"));
+		
+		/* Get all projects */
+		if (!((WorkspaceType) request.getSession().getAttribute("workspaceType")).equals(WorkspaceType.PROJECT)) {
+			List<UserProject> projects = userProjectService.retrieveAll(workspaceId);
+			
+			model.addAttribute("projects", projects);
+		}
+		
 		
 		Optional.ofNullable((ExceptionsDto)request.getSession().getAttribute("exceptionsDto")).ifPresent(exceptionsDto -> {
 			model.addAttribute("exceptionsDto", exceptionsDto);

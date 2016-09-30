@@ -48,6 +48,10 @@ public class Workspace {
 		return type;
 	}
 
+	public Set<UserAccount> getUserAccounts() {
+		return userAccounts;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

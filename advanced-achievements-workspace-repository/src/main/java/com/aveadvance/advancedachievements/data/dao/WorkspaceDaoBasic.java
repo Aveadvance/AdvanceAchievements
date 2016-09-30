@@ -14,9 +14,9 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import com.aveadvance.advancedachievements.data.dao.AbstractDao;
 import com.aveadvance.advancedachievements.data.entities.UserAccount;
 import com.aveadvance.advancedachievements.data.entities.Workspace;
+import com.aveadvance.advancedachievements.data.entities.WorkspaceType;
 
 @Repository
 public class WorkspaceDaoBasic extends AbstractDao<Workspace, Long> implements WorkspaceDao {
@@ -35,7 +35,9 @@ public class WorkspaceDaoBasic extends AbstractDao<Workspace, Long> implements W
 		Root<Workspace> root = criteriaQuery.from(Workspace.class);
 		criteriaQuery.select(root);
 		Expression<Collection<UserAccount>> userAccounts = root.get("userAccounts");
-		criteriaQuery.where(criteriaBuilder.isMember(userAccount, userAccounts));
+		// TODO: Fix depricated warning.
+		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.isMember(userAccount, userAccounts)
+				, criteriaBuilder.notEqual(root.get("type"), WorkspaceType.PROJECT)));
 		TypedQuery<Workspace> typedQuery = entityManager.createQuery(criteriaQuery);
 		return typedQuery.getResultList();
 	}

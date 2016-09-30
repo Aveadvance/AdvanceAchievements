@@ -7,7 +7,7 @@ import com.aveadvance.advancedachievements.data.entities.UserTaskCategory;
 
 public interface UserTaskCategoryService {
 
-	public long create(long workspaceId, String name);
+	public void create(long workspaceId, String name);
 
 	public Optional<UserTaskCategory> retrieve(long workspaceId, long id);
 

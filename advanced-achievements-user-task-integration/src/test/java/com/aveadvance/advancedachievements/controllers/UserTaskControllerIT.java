@@ -45,6 +45,12 @@ public class UserTaskControllerIT {
 	
 	private MockMvc mockMvc;
 	
+	private UserAccount testUserAccount = new UserAccount("example@example.com", "12345"
+			, new HashSet<>(Arrays.asList(Authority.ROLE_USER)), true);
+	
+	private UserTask testUserTask = new UserTask(null, "New task", "My new task"
+			, Priority.MIDDLE, testUserAccount, UserTaskState.TO_DO, LocalDateTime.now());
+	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 	
@@ -56,12 +62,6 @@ public class UserTaskControllerIT {
 	
 	@Autowired
 	private WorkspaceService workspaceService;
-	
-	UserAccount testUserAccount = new UserAccount("example@example.com", "12345"
-			, new HashSet<>(Arrays.asList(Authority.ROLE_USER)), true);
-	
-	UserTask testUserTask = new UserTask(null, "New task", "My new task"
-			, Priority.MIDDLE, testUserAccount, UserTaskState.TO_DO, LocalDateTime.now());
 	
 	@Before
 	public void before() {

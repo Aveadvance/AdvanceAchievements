@@ -22,10 +22,5 @@
   		<groupId>${project.groupId}</groupId>
   		<artifactId>advanced-achievements-user-account-entities</artifactId>
   	</dependency>
-  	<dependency>
-  		<groupId>${project.groupId}</groupId>
-  		<artifactId>advanced-achievements-user-account-entities</artifactId>
-  		<version>${project.version}</version>
-  	</dependency>
   </dependencies>
 </project>

@@ -31,14 +31,11 @@ public class UserTaskCategoryServiceBasic implements UserTaskCategoryService {
 	@Override
 	@Secured("ROLE_USER")
 	@Transactional
-	public long create(long workspaceId, String name) {
-		List<Workspace> workspaces = workspaceService.retrieveAll();
-//		workspaces = workspaces.parallelStream()
-//				.filter((workspace) -> workspace.getId() == workspaceId).limit(2).collect(Collectors.toList());
-//		if (workspaces.size() > 1) throw new NonUniqueResultException();
-		UserTaskCategory userTaskCategory = new UserTaskCategory(name, workspaces.get(0));
-		userTaskCategoryDao.create(userTaskCategory);
-		return userTaskCategory.getId();
+	public void create(long workspaceId, String name) {
+		workspaceService.retrieve(workspaceId).ifPresent(workspace -> {
+			UserTaskCategory userTaskCategory = new UserTaskCategory(name, workspace);
+			userTaskCategoryDao.create(userTaskCategory);
+		});
 	}
 
 	@Override

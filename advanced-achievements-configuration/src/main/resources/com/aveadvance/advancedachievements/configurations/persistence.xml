@@ -11,6 +11,7 @@
 		<class>com.aveadvance.advancedachievements.data.entities.UserTask</class>
 		<class>com.aveadvance.advancedachievements.data.entities.UserTaskCategory</class>
 		<class>com.aveadvance.advancedachievements.data.entities.Workspace</class>
+		<class>com.aveadvance.advancedachievements.data.entities.UserProject</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>
@@ -37,6 +38,7 @@
 		<class>com.aveadvance.advancedachievements.data.entities.UserTask</class>
 		<class>com.aveadvance.advancedachievements.data.entities.UserTaskCategory</class>
 		<class>com.aveadvance.advancedachievements.data.entities.Workspace</class>
+		<class>com.aveadvance.advancedachievements.data.entities.UserProject</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver"/>

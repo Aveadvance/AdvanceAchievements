@@ -24,6 +24,10 @@
 		<security:intercept-url pattern="/create-task-category-page" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/newtaskcategory" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/deletetaskcategory" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/create-project-page" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/update-project-page" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/newproject" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/deleteproject" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/static/**" access="permitAll"/>
 		<security:intercept-url pattern="/login" access="permitAll"/>
 		<security:intercept-url pattern="/logout" access="permitAll"/>
