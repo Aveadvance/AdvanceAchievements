@@ -26,6 +26,9 @@
 			<property name="hibernate.c3p0.timeout" value="300"/>
 			<property name="hibernate.c3p0.max_statements" value="50"/>
 			<property name="hibernate.c3p0.idle_test_period" value="300"/>
+			<property name="javax.persistence.validation.group.pre-persist" value="com.aveadvance.advancedachievements.data.dao.PersistenceValidationGroup"/>
+			<property name="javax.persistence.validation.group.pre-update" value="com.aveadvance.advancedachievements.data.dao.PersistenceValidationGroup"/>
+			<property name="javax.persistence.validation.group.pre-remove" value="com.aveadvance.advancedachievements.data.dao.PersistenceValidationGroup"/>
 			<!-- <property name="hibernate.c3p0.acquire_increment" value="1"/> -->
 			<property name="hibernate.hbm2ddl.auto" value="create"/>
 		</properties>

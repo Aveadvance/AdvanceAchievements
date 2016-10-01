@@ -2,6 +2,7 @@ package com.aveadvance.advancedachievements.data.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
@@ -19,12 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aveadvance.advancedachievements.data.entities.Authority;
 import com.aveadvance.advancedachievements.data.entities.UserAccount;
-import com.aveadvance.advancedachievements.data.services.UserAccountService;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations = { "classpath:com/aveadvance/advancedachievements/configurations/data-test-context.xml",
 		"classpath:com/aveadvance/advancedachievements/configurations/dao-context.xml",
-		"classpath:com/aveadvance/advancedachievements/configurations/service-context.xml" })
+		"classpath:com/aveadvance/advancedachievements/configurations/service-context.xml",
+		"classpath:com/aveadvance/advancedachievements/configurations/security-context.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserAccountServiceIT {
 
@@ -39,7 +40,8 @@ public class UserAccountServiceIT {
 		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
 		UserAccount userAccount = userAccountService.retrieve(userAccount1.getEmail()).get();
 		assertEquals("Email must be identical.", userAccount1.getEmail(), userAccount.getEmail());
-		assertEquals("Password must be identical.", userAccount1.getPassword(), userAccount.getPassword());
+		assertTrue("Password must be encripted.", userAccount.getPassword().length() > 0);
+		assertNotEquals("Password must be encripted.", userAccount1.getPassword(), userAccount.getPassword());
 	}
 
 	@Test
@@ -137,6 +139,15 @@ public class UserAccountServiceIT {
 				,userAccountService.retrieve("user2@example.com").get().getId() > 0);
 		assertEquals("Id should be positive number. (Oracle feature)", true
 				,userAccountService.retrieve("user3@example.com").get().getId() > 0);
+	}
+
+	@Test
+	@Transactional
+	public void passwordEncoding() {
+		userAccountService.create(userAccount1.getEmail(), userAccount1.getPassword());
+		UserAccount userAccount = userAccountService.retrieve(userAccount1.getEmail()).get();
+		assertTrue("Password must be encripted.", userAccount.getPassword().length() > 0);
+		assertNotEquals("Password must be encripted.", userAccount1.getPassword(), userAccount.getPassword());
 	}
 
 }

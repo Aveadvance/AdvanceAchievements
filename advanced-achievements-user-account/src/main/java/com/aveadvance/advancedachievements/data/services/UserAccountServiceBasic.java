@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,18 +25,21 @@ public class UserAccountServiceBasic implements UserAccountService {
 	
 	@Autowired
 	private WorkspaceService workspaceService;
+	
+	@Autowired
+	private PasswordEncoder encoder;
 
 	@Override
 	@Transactional
 	public boolean create(String email, String password) {
-		UserAccount userAccount = new UserAccount(email, password);
+		UserAccount userAccount = new UserAccount(email, encoder.encode(password));
 		return create(userAccount);
 	}
 
 	@Override
 	@Secured({"ROLE_ADMIN"})
 	public boolean create(String email, String password, Set<Authority> authorities) {
-		UserAccount userAccount = new UserAccount(email, password, authorities);
+		UserAccount userAccount = new UserAccount(email, encoder.encode(password), authorities);
 		return create(userAccount);
 	}
 

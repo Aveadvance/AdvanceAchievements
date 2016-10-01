@@ -23,6 +23,9 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.aveadvance.advancedachievements.data.dao.FormValidationGroup;
+import com.aveadvance.advancedachievements.data.dao.PersistenceValidationGroup;
+
 @Entity
 @Table(name="user_accounts")
 public class UserAccount {
@@ -32,27 +35,27 @@ public class UserAccount {
 	@SequenceGenerator(name="user_accounts_seq", sequenceName="user_accounts_seq", initialValue=1, allocationSize=1)
 	private long id;
 
-	@NotNull
-	@NotBlank
-	@Email(regexp=".*\\@.*\\..*")
+	@NotNull(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@Email(regexp=".*\\@.*\\..*", groups={PersistenceValidationGroup.class, FormValidationGroup.class})
 	@Column(name="email", unique=true)
 	private String email;
 
-	@NotNull
-	@NotBlank
-	@Size(min=5, max=50)
+	@NotNull(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@NotBlank(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
+	@Size(min=5, max=50, groups={FormValidationGroup.class})
 	@Column(name="password")
 	private String password;
 	
-	@NotNull
+	@NotNull(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
 	@Column(name="creation_date")
 	private LocalDateTime creationDate;
 	
-	@NotNull
+	@NotNull(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
 	@Column(name="enabled")
 	private boolean enabled;
 	
-	@NotNull
+	@NotNull(groups={PersistenceValidationGroup.class, FormValidationGroup.class})
 	@ElementCollection
 	@Enumerated(EnumType.STRING)
 	@Column(name="authority")

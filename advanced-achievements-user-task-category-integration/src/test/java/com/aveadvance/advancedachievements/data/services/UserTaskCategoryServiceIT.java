@@ -25,6 +25,7 @@ import com.aveadvance.advancedachievements.exceptions.CategoryNotEmptyException;
 @ActiveProfiles("development")
 @ContextConfiguration(locations={"classpath:com/aveadvance/advancedachievements/configurations/data-test-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/dao-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/security-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/service-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserTaskCategoryServiceIT {

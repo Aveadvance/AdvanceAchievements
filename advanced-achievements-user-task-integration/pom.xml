@@ -70,6 +70,16 @@
   		<scope>test</scope>
   	</dependency>
   	<dependency>
+  		<groupId>${project.groupId}</groupId>
+  		<artifactId>advanced-achievements-user-project</artifactId>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>${project.groupId}</groupId>
+  		<artifactId>advanced-achievements-user-project-repository</artifactId>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
   		<groupId>javax.servlet</groupId>
   		<artifactId>javax.servlet-api</artifactId>
   		<scope>test</scope>

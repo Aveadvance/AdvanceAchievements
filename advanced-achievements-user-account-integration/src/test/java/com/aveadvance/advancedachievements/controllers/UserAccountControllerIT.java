@@ -1,6 +1,8 @@
 package com.aveadvance.advancedachievements.controllers;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,6 +29,7 @@ import com.aveadvance.advancedachievements.data.services.UserAccountService;
 @ActiveProfiles("development")
 @ContextConfiguration(locations ={"classpath:com/aveadvance/advancedachievements/configurations/dispatcher-servlet.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/service-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/security-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/dao-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/data-test-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -61,8 +64,8 @@ public class UserAccountControllerIT {
 		UserAccount retrievedAccount = userAccountService.retrieve(correctAccountDto.getEmail()).get();
 		assertEquals("Account should be saved in the database"
 				, correctAccountDto.getEmail(), retrievedAccount.getEmail());
-		assertEquals("Account should be saved in the database"
-				, correctAccountDto.getPassword(), retrievedAccount.getPassword());
+		assertTrue("Password must be encripted.", retrievedAccount.getPassword().length() > 0);
+		assertNotEquals("Password must be encripted.", correctAccountDto.getPassword(), retrievedAccount.getPassword());
 	}
 	
 	@Test

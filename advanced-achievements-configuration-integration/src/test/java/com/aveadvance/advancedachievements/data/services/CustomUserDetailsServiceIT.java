@@ -1,6 +1,7 @@
 package com.aveadvance.advancedachievements.data.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -21,6 +22,7 @@ import com.aveadvance.advancedachievements.data.entities.UserAccount;
 @ActiveProfiles("development")
 @ContextConfiguration(locations = {"classpath:com/aveadvance/advancedachievements/configurations/data-test-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/service-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/security-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/dao-context.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CustomUserDetailsServiceIT {
@@ -40,7 +42,8 @@ public class CustomUserDetailsServiceIT {
 		userAccountService.retrieve(testUserAccount1.getEmail());
 		UserDetails user = detailsService.loadUserByUsername(testUserAccount1.getEmail());
 		assertEquals("User details are correctly loaded", testUserAccount1.getEmail(), user.getUsername());
-		assertEquals("User details are correctly loaded", testUserAccount1.getPassword(), user.getPassword());
+		assertTrue("Password should be encrypted", user.getPassword().length() > 0);
+		assertNotEquals("Password should be encrypted", testUserAccount1.getPassword(), user.getPassword());
 		for (Authority authority : testUserAccount1.getAuthorities()) {
 			assertTrue("User details are correctly loaded", user.getAuthorities().contains(new SimpleGrantedAuthority(authority.name())));
 		}

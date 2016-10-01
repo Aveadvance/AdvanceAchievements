@@ -36,6 +36,7 @@ import com.aveadvance.advancedachievements.data.services.WorkspaceService;
 
 @ActiveProfiles("development")
 @ContextConfiguration(locations={"classpath:com/aveadvance/advancedachievements/configurations/dispatcher-servlet.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/security-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/service-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/data-test-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/dao-context.xml"})

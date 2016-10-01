@@ -40,7 +40,8 @@ import com.aveadvance.advancedachievements.data.services.WorkspaceService;
 @ContextConfiguration(locations={"classpath:com/aveadvance/advancedachievements/configurations/dispatcher-servlet.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/data-test-context.xml"
 		, "classpath:com/aveadvance/advancedachievements/configurations/dao-context.xml"
-		, "classpath:com/aveadvance/advancedachievements/configurations/service-context.xml"})
+		, "classpath:com/aveadvance/advancedachievements/configurations/service-context.xml"
+		, "classpath:com/aveadvance/advancedachievements/configurations/security-context.xml"})
 @WebAppConfiguration
 public class UserProjectControllerIT {
 	
@@ -102,7 +103,7 @@ public class UserProjectControllerIT {
 				, retrievedProject.getCreationDate().isEqual(start) 
 				|| retrievedProject.getCreationDate().isAfter(start) 
 				&& retrievedProject.getCreationDate().isBefore(stop));
-		assertEquals("Project created", 2, workspaceService.retrieveAll().size());
+		assertTrue("Project created", retrievedProject.getWorkspace().getId() != 0);
 	}
 	
 	@Test
@@ -118,6 +119,7 @@ public class UserProjectControllerIT {
 		assertEquals("Project created", "Test project", retrievedProject.getName());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post("/deleteproject")
+				.sessionAttr("parentWorkspaceId", workspace.getId())
 				.sessionAttr("workspaceId", workspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("id", Long.toString(retrievedProject.getId())))
@@ -147,6 +149,7 @@ public class UserProjectControllerIT {
 		assertEquals("Project created", "Test project", retrievedProject.getName());
 		
 		mockMvc.perform(MockMvcRequestBuilders.post("/deleteproject")
+				.sessionAttr("parentWorkspaceId", workspace.getId())
 				.sessionAttr("workspaceId", workspace.getId())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("id", Long.toString(retrievedProject.getId())))

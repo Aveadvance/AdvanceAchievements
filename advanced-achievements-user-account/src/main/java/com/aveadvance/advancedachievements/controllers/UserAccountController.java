@@ -1,11 +1,12 @@
 package com.aveadvance.advancedachievements.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aveadvance.advancedachievements.data.dto.UserAccountDto;
@@ -18,7 +19,7 @@ public class UserAccountController {
 	private UserAccountService userAccountService;
 	
 	@RequestMapping("/newaccount")
-	public String newAccount(@Validated UserAccountDto userAccountDto, BindingResult bindingResult, Model model) {
+	public String newAccount(@Valid UserAccountDto userAccountDto, BindingResult bindingResult, Model model) {
 		
 		
 		if (bindingResult.hasErrors()) {

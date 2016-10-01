@@ -6,7 +6,9 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<security:authentication-manager>
-		<security:authentication-provider user-service-ref="customUserDetailsService"/>
+		<security:authentication-provider user-service-ref="customUserDetailsService">
+		<security:password-encoder ref="encoder"></security:password-encoder>
+		</security:authentication-provider>
 	</security:authentication-manager>
 	
 	<security:http use-expressions="true">
@@ -40,5 +42,9 @@
 		<security:form-login login-page="/login" authentication-success-forward-url="/" authentication-failure-url="/login?exception"/>
 		<security:logout logout-success-url="/"/>
 	</security:http>
+	
+	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<constructor-arg name="strength" value="11" />
+	</bean>
 
 </beans>
