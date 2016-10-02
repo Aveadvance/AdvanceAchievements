@@ -34,6 +34,9 @@ public class UserTaskServiceBasic implements UserTaskService {
 	
 	@Autowired
 	private UserTaskCategoryService userTaskCategoryService;
+	
+	@Autowired
+	private UserTaskTimerService userTaskTimerService;
 
 	@Override
 	@Transactional(readOnly=true)
@@ -52,9 +55,11 @@ public class UserTaskServiceBasic implements UserTaskService {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserAccount owner = userAccountService.retrieve(auth.getName()).get();
 		workspaceService.retrieve(workspaceId).ifPresent(workspace -> {
+			LocalDateTime now = LocalDateTime.now();
 			UserTask userTask = new UserTask(workspace, title, description, priority, owner
-					, UserTaskState.TO_DO, LocalDateTime.now());
+					, UserTaskState.TO_DO, now);
 			userTaskDao.create(userTask);
+			userTaskTimerService.create(userTask, now, now);
 		});
 		return true;
 	}
@@ -64,9 +69,11 @@ public class UserTaskServiceBasic implements UserTaskService {
 	private boolean create(Workspace workspace, String title, String description, Priority priority, UserTaskCategory category) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserAccount owner = userAccountService.retrieve(auth.getName()).get();
+		LocalDateTime now = LocalDateTime.now();
 		UserTask userTask = new UserTask(workspace, title, description, priority, owner
-				,category , UserTaskState.TO_DO, LocalDateTime.now());
+				,category , UserTaskState.TO_DO, now);
 		userTaskDao.create(userTask);
+		userTaskTimerService.create(userTask, now, now);
 		return true;
 	}
 
@@ -118,17 +125,7 @@ public class UserTaskServiceBasic implements UserTaskService {
 	@Transactional
 	@Secured({"ROLE_USER"})
 	public void delete(long workspaceId, long id) {
-		
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		if (!userTaskService
-//				.retrieve(auth.getName(), workspaceId)
-//				.parallelStream()
-//				.filter(task -> task.getCategory().isPresent()?task.getCategory().get().getId()==id:false)
-//				.collect(Collectors.toList())
-//				.isEmpty()) {
-//			throw new CategoryNotEmptyException();
-//		}
-		
+		userTaskTimerService.delete(id);
 		userTaskDao.delete(id);
 	}
 

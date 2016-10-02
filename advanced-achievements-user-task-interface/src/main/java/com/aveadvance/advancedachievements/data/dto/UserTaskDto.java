@@ -23,6 +23,15 @@ public class UserTaskDto {
 
 	public UserTaskDto() {}
 	
+	public UserTaskDto(long id, String title, String description, Priority priority, long userTaskCategoryId) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.priority = priority;
+		this.userTaskCategoryId = userTaskCategoryId;
+	}
+	
 	public long getId() {
 		return id;
 	}

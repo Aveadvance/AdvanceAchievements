@@ -4,6 +4,8 @@
 	DROP SEQUENCE user_task_category_seq;
 	DROP SEQUENCE workspace_seq;
 	DROP SEQUENCE user_project_seq;
+	DROP SEQUENCE user_task_timer_seq;
+
 	DROP TABLE user_accounts CASCADE CONSTRAINTS;
 	DROP TABLE user_account_authorities CASCADE CONSTRAINTS;
 	DROP TABLE workspaces CASCADE CONSTRAINTS;
@@ -11,6 +13,7 @@
 	DROP TABLE user_tasks CASCADE CONSTRAINTS;
 	DROP TABLE user_task_categories CASCADE CONSTRAINTS;
 	DROP TABLE user_projects CASCADE CONSTRAINTS;
+	DROP TABLE user_task_timers CASCADE CONSTRAINTS;
 
 	DELETE FROM workspaces;
 	DELETE FROM user_accounts;
@@ -19,6 +22,7 @@
 	DELETE FROM user_tasks;
 	DELETE FROM user_task_categories;
 	DELETE FROM user_projects;
+	DELETE FROM user_task_timers;
 
 	SELECT acc.id, email, authority FROM user_accounts acc 
 		INNER JOIN user_account_authorities auth ON acc.id=auth.id;
@@ -34,6 +38,7 @@ CREATE SEQUENCE workspace_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE user_task_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE user_task_category_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE user_project_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE user_task_timer_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE user_accounts (
 	id NUMBER(19,0) NOT NULL,
@@ -113,6 +118,16 @@ CREATE TABLE user_projects (
 	PRIMARY KEY (id),
 	CONSTRAINT project_workspace_fk FOREIGN KEY (workspace_id) REFERENCES workspaces,
 	CONSTRAINT project_workspace_workspace_fk FOREIGN KEY (project_workspace_id) REFERENCES workspaces
+);
+
+CREATE TABLE user_task_timers (
+	id NUMBER(19,0) NOT NULL,
+	user_task_id NUMBER(19, 0) NOT NULL,
+	interval_start TIMESTAMP NOT NULL,
+	interval_end TIMESTAMP NOT NULL,
+	start_date TIMESTAMP,
+	PRIMARY KEY (id),
+	CONSTRAINT timer_task_fk FOREIGN KEY (user_task_id) REFERENCES user_tasks
 );
 
 *** FOR PROJECT AND TASK CATEGORY TABLES?	

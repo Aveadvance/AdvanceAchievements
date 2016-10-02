@@ -47,7 +47,7 @@ public class UserTaskServiceIT {
 	@Autowired
 	private UserTaskService userTaskService;
 	
-	UserAccount testUserAccount = new UserAccount("example@example.com", "12345"
+	private UserAccount testUserAccount = new UserAccount("example@example.com", "12345"
 			, new HashSet<>(Arrays.asList(Authority.ROLE_USER)), true);
 	
 	private UserTask testUserTask = new UserTask(null, "Title of the task", "Description of task"
